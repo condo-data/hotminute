@@ -1,5 +1,13 @@
 # Ignore everything in this directory
 *
+*.pyc
+*.pyo
+*.c9
+.c9/
+*.git
+app.db
+search.db
+
 # Except this file
 !.gitignore
 
