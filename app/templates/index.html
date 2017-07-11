@@ -1,0 +1,19 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Condo Form</h1>
+    <form action="/index" method="POST" name="">
+        {{ form.hidden_tag() }}
+        <p>
+            Please select a state: <br>
+            {{ form.state }}
+        </p>
+
+        <p><button type="submit">Submit</button></p>
+      </form>
+
+    
+    
+{% endblock %}
