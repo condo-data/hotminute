@@ -3,14 +3,10 @@ from wtforms import StringField, BooleanField, SelectField
 from wtforms import validators
 from wtforms.validators import DataRequired
 from app import app
-
-
-#class LoginForm(Form):
-#    openid = StringField('openid', validators=[DataRequired()])
-#    remember_me = BooleanField('remember_me', default=False)
     
 class CondoForm(FlaskForm):
-    #state = StringField('State', validators=[DataRequired()])
+    
+    
     states=[('AK', 'Alaska'),('AL', 'Alabama'),('AR', 'Arkansas'),( 'AZ', 'Arizona'),('CA', 'California'),('CO', 'Colorado'),
     ('CT', 'Connecticut'),('DC', 'District of Columbia'),('DE', 'Delaware'),('FL', 'Florida'),('GA', 'Georgia'),
     ('HI', 'Hawaii'),('IA', 'Iowa'),('ID', 'Idaho'),('IL', 'Illinois'),('IN', 'Indiana'),('KS', 'Kansas'),('KY', 'Kentucky'),
@@ -23,4 +19,4 @@ class CondoForm(FlaskForm):
     state = SelectField(
         'State', 
         choices=states, )
-       # validators=[DataRequired()])
+ 
