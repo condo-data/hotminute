@@ -1,6 +1,6 @@
 CSRF_ENABLED = True
 SECRET_KEY = 'thi$ismy$ecretkey!'
-
+#SERVER_NAME = 'condo-data-pineapplepunch1.c9users.io'
 
 OPENID_PROVIDERS = [
     {'name': 'Google', 'url': 'https://www.google.com/accounts/o8/id'},

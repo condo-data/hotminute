@@ -5,6 +5,7 @@ import re
 import mechanize
 import csv
 from selenium import webdriver
+from app import app
 
 
 def scrapeSinglePage(text, data):
@@ -52,7 +53,7 @@ def scraperNoScraping(state):
     scrapeSinglePage(text,data)
 
     filename = state + "_Condo_Data.csv"
-    with open(filename, "wb") as file:
+    with open(app.static_folder+ "//" + filename, "wb") as file:
         writer = csv.writer(file)
         writer.writerows(data)
 

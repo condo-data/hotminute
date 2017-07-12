@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SelectField
+from wtforms import StringField, BooleanField, SelectField, SubmitField
 from wtforms import validators
 from wtforms.validators import DataRequired
 from app import app
@@ -19,4 +19,6 @@ class CondoForm(FlaskForm):
     state = SelectField(
         'State', 
         choices=states, )
+        
+    submit = SubmitField()
  

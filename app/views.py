@@ -1,29 +1,28 @@
-from flask import render_template, flash, redirect,request, url_for
+from flask import render_template, flash, redirect,request, current_app, url_for,send_from_directory
 from app import app
 from .forms import CondoForm
 import condo_data
+import os
 
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     
     form = CondoForm()
 
-    if request.method == 'POST':
-        print("j")
-        if form.validate_on_submit():
+    if form.validate_on_submit():
             
-            state_selected = request.form['state']
-            print(state_selected)
-            
-            fn = "issa working"
-            
-            return redirect(url_for("index") + "#myModal")
+        state_selected = request.form['state']
+        fn = condo_data.scraperNoScraping(state_selected)
+   
+        return redirect(url_for("download", filename=fn))
  
     return render_template('index.html',form=form)
                   
+    
        
-@app.route('/download/<filename>', methods=['GET','POST'])   
+       
+@app.route('/download/<filename>', methods=['GET', 'POST'])
 def download(filename=None):
-    print(filename + " hey")
-    return "HEY"
+    
+    return send_from_directory(directory=app.static_folder, filename=filename)
