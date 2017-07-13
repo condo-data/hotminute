@@ -1,9 +1,8 @@
-<!-- extend base layout -->
+
 {% extends "base.html" %}
 
 {% block content %}
 
-    <h1>Condo Form</h1>
     <form action="{{ url_for('index') }}" method="POST" name="condoform">
         {{ form.hidden_tag() }}
         <p>
@@ -13,9 +12,6 @@
         </p>
 
       </form>
-      
-
-
     
     
 {% endblock %}

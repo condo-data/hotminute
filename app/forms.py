@@ -16,9 +16,14 @@ class CondoForm(FlaskForm):
     ('OK', 'Oklahoma'),('OR', 'Oregon'),('PA', 'Pennsylvania'),('RI', 'Rhode Island'),('SC', 'South Carolina'),
     ('SD', 'South Dakota'),('TN', 'Tennessee'),('TX', 'Texas'),('UT', 'Utah'),('VA', 'Virginia'),('VT', 'Vermont'),
     ('WA', 'Washington'),('WI', 'Wisconsin'),('WV', 'West Virginia'),('WY', 'Wyoming')]
+   
     state = SelectField(
         'State', 
         choices=states, )
         
     submit = SubmitField()
+    
+class DownloadForm(FlaskForm):
+    
+    submit = SubmitField("Download")
  

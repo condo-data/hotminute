@@ -52,7 +52,7 @@ def scraperNoScraping(state):
     
     scrapeSinglePage(text,data)
 
-    filename = state + "_Condo_Data.csv"
+    filename = "Condo_Data.csv"
     with open(app.static_folder+ "//" + filename, "wb") as file:
         writer = csv.writer(file)
         writer.writerows(data)
