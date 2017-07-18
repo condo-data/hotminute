@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
+{% if msgs %}
+    <div class="alert alert-warning" style="margin-right:50%;">
+        
+    
+      <strong>Warning!</strong> <p> {{ msgs }}</p>
+      
+    </div>
+    
+    {% endif %}
 
 
        <form action="{{ url_for('downloadpage', state_selected=state_selected, filename=filename ) }}" method="POST" name="downloadform">
@@ -7,9 +16,15 @@
             {{ form.hidden_tag() }}
              
              <p> Would you like to download this {{ filename }} file? </p>   
-         
+             
+             
+             
             {{form.submit}}
             
+            
         </form>
+
+            
+       
 
 {% endblock %}

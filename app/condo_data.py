@@ -64,10 +64,10 @@ def scraperNoScraping(state):
 
     ans="CondoName,Condo ID /Submission,Address,County,ApprovalMethod,Compositionof Project,Comments,DocumentStatus,ManufacturedHousing,FHAConcentration,Status,StatusDate,ExpirationDate\n"
     t0 = time.time()
-    scrapeSinglePage(text)  
+    ans += scrapeSinglePage(text)  
     
     count = 0;
-
+    msg = ""
     while isThereNext(text):
         #if response.code == 500:
         #    continue
@@ -81,8 +81,9 @@ def scraperNoScraping(state):
             #    print count
             #print("done")
         except:
-            print("Error: " + str(response.code))
-            text = ""
+            #print("Error: " + str(response.code))
+            msg= "Site error occured in reading data for " + state + ", not all data was retrieved."
+            break
             
         if len(text)> 0:
             ans += scrapeSinglePage(text)
@@ -91,8 +92,31 @@ def scraperNoScraping(state):
     print "duration: %.2f s." % d
     
     with open(app.static_folder+ "//output//" + filename, "wb") as file:
-    #with open("static/" + filename, "wb") as file:
+    #with open("static/output/" + filename, "wb") as file:
         file.write(ans)
+    #print msg
+    return msg
+def getAllStates():
+    states = app.config['STATES']
+    #states = [('AK', 'Alaska'),('AL', 'Alabama'),('AR', 'Arkansas'),( 'AZ', 'Arizona'),('CA', 'California'),('CO', 'Colorado'),
+    #('CT', 'Connecticut'),('DC', 'District of Columbia'),('DE', 'Delaware'),('FL', 'Florida'),('GA', 'Georgia'), ('GU', 'Guam'),
+    #('HI', 'Hawaii'),('IA', 'Iowa'),('ID', 'Idaho'),('IL', 'Illinois'),('IN', 'Indiana'),('KS', 'Kansas'),('KY', 'Kentucky'),
+    #('LA', 'Louisiana'),('MA', 'Massachusetts'),('MD', 'Maryland'),('ME', 'Maine'),('MI', 'Michigan'),('MN', 'Minnesota'),
+    #('MO', 'Missouri'),('MS', 'Mississippi'),('MT', 'Montana'),('NC', 'North Carolina'),('ND', 'North Dakota'),('NE', 'Nebraska'),
+    #('NH', 'New Hampshire'),('NJ', 'New Jersey'),('NM', 'New Mexico'),('NV', 'Nevada'),('NY', 'New York'),('OH', 'Ohio'),
+    #('OK', 'Oklahoma'),('OR', 'Oregon'),('PA', 'Pennsylvania'),('PR', 'Puerto Rico'),('RI', 'Rhode Island'),('SC', 'South Carolina'),
+    #('SD', 'South Dakota'),('TN', 'Tennessee'),('TX', 'Texas'),('UT', 'Utah'),('VA', 'Virginia'),('VI', 'Virgin Islands'),('VT', 'Vermont'),
+    #('WA', 'Washington'),('WI', 'Wisconsin'),('WV', 'West Virginia'),('WY', 'Wyoming')]
     
+    t0 = time.time()
+    msgs = []
+    for x in states:
+        print(x[0])
+        msgs.append(scraperNoScraping(x[0]))
+    d = time.time() - t0
+    print "duration of all states : %.2f s." % d
+        
+    return msgs
+#getAllStates()
 #scraperNoScraping("")
 #print("program done")

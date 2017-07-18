@@ -22,9 +22,14 @@ def index():
     form = CondoForm()
 
     if form.validate_on_submit():
+        
             
         state_selected = request.form['state']
-        future = executor.submit( condo_data.scraperNoScraping, state_selected)
+        
+        if state_selected == "ALL":
+            future = executor.submit( condo_data.getAllStates)
+        else:
+            future = executor.submit( condo_data.scraperNoScraping, state_selected)
         #condo_data.scraperNoScraping(state_selected)
         #task = run_scrape_data.apply_async(args=[state_selected])
         
@@ -55,7 +60,7 @@ def loadpage_1(state_selected=None):
     #        else: 
                 #print("first page: sleep for 5 more sec!")
     #            time.sleep(5)
-        time.sleep(40)
+        time.sleep(50)
     #print("done 1")
 
     
@@ -83,12 +88,13 @@ def downloadpage(state_selected=None):
     month = mydate.strftime("%B")
     year = mydate.year
     fn = str(month) + str(year) + "_" + state_selected + "_Condo_Data.csv"
-    
+    msgs = future.result()
+    #print(msgs + " messages")
     if form.validate_on_submit():
     
         return redirect(url_for("download", state_selected=state_selected, filename=fn)) 
 
-    return render_template('download.html',form=form, state_selected=state_selected, filename=fn)
+    return render_template('download.html',form=form, state_selected=state_selected, filename=fn, msgs=msgs)
     
 @app.route('/download/<state_selected>/<filename>', methods=['GET', 'POST'])
 def download(state_selected=None, filename=None):
