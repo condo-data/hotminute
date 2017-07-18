@@ -10,4 +10,5 @@ search.db
 
 # Except this file
 !.gitignore
+!static/
 
