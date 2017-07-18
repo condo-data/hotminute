@@ -1,11 +1,13 @@
 CSRF_ENABLED = True
 SECRET_KEY = 'thi$ismy$ecretkey!'
-#SERVER_NAME = 'condo-data-pineapplepunch1.c9users.io'
 
-OPENID_PROVIDERS = [
-    {'name': 'Google', 'url': 'https://www.google.com/accounts/o8/id'},
-    {'name': 'Yahoo', 'url': 'https://me.yahoo.com'},
-    {'name': 'AOL', 'url': 'http://openid.aol.com/<username>'},
-    {'name': 'Flickr', 'url': 'http://www.flickr.com/<username>'},
-    {'name': 'MyOpenID', 'url': 'https://www.myopenid.com'}]
+STATES = [('AK', 'Alaska'),('AL', 'Alabama'),('AR', 'Arkansas'),( 'AZ', 'Arizona'),('CA', 'California'),('CO', 'Colorado'),
+    ('CT', 'Connecticut'),('DC', 'District of Columbia'),('DE', 'Delaware'),('FL', 'Florida'),('GA', 'Georgia'), ('GU', 'Guam'),
+    ('HI', 'Hawaii'),('IA', 'Iowa'),('ID', 'Idaho'),('IL', 'Illinois'),('IN', 'Indiana'),('KS', 'Kansas'),('KY', 'Kentucky'),
+    ('LA', 'Louisiana'),('MA', 'Massachusetts'),('MD', 'Maryland'),('ME', 'Maine'),('MI', 'Michigan'),('MN', 'Minnesota'),
+    ('MO', 'Missouri'),('MS', 'Mississippi'),('MT', 'Montana'),('NC', 'North Carolina'),('ND', 'North Dakota'),('NE', 'Nebraska'),
+    ('NH', 'New Hampshire'),('NJ', 'New Jersey'),('NM', 'New Mexico'),('NV', 'Nevada'),('NY', 'New York'),('OH', 'Ohio'),
+    ('OK', 'Oklahoma'),('OR', 'Oregon'),('PA', 'Pennsylvania'),('RI', 'Rhode Island'),('SC', 'South Carolina'),
+    ('SD', 'South Dakota'),('TN', 'Tennessee'),('TX', 'Texas'),('UT', 'Utah'),('VA', 'Virginia'),('VT', 'Vermont'),
+    ('WA', 'Washington'),('WI', 'Wisconsin'),('WV', 'West Virginia'),('WY', 'Wyoming')]
 

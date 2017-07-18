@@ -3,15 +3,16 @@
 
 {% block content %}
 
-    <form action="{{ url_for('index') }}" method="POST" name="condoform">
+    <form class="form-inline" action="{{ url_for('index') }}" method="POST" name="condoform">
+   <div class="form-group">
         {{ form.hidden_tag() }}
         
            
-            Please select a state: <br>
-            {{ form.state }}
+            <p >Please select a state: {{ form.state }} <p> 
+           
              {{ form.submit() }} <br>
         
-
+</div>
       </form>
     
 {% endblock %}
