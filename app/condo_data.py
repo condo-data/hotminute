@@ -4,6 +4,9 @@ import time
 import re
 import mechanize
 import csv
+import os
+from io import BytesIO
+import zipfile
 from app import app
 
 
@@ -96,8 +99,11 @@ def scraperNoScraping(state):
         file.write(ans)
     #print msg
     return msg
+    
 def getAllStates():
     states = app.config['STATES']
+    #states = [('GU', 'Guam'),('MI', 'Michigan')]
+    #('CT', 'Connecticut')]
     #states = [('AK', 'Alaska'),('AL', 'Alabama'),('AR', 'Arkansas'),( 'AZ', 'Arizona'),('CA', 'California'),('CO', 'Colorado'),
     #('CT', 'Connecticut'),('DC', 'District of Columbia'),('DE', 'Delaware'),('FL', 'Florida'),('GA', 'Georgia'), ('GU', 'Guam'),
     #('HI', 'Hawaii'),('IA', 'Iowa'),('ID', 'Idaho'),('IL', 'Illinois'),('IN', 'Indiana'),('KS', 'Kansas'),('KY', 'Kentucky'),
@@ -115,8 +121,30 @@ def getAllStates():
         msgs.append(scraperNoScraping(x[0]))
     d = time.time() - t0
     print "duration of all states : %.2f s." % d
-        
+    print(msgs)
     return msgs
+    
+#def zipFiles():
+    #memory_file = BytesIO()
+#    memory_file = "static/output/All_States.zip"
+#    files = []
+    
+#    for file in os.listdir("static/output/"):
+#        if file.endswith(".csv"):
+#            files.append(os.path.join(file))
+#    print(files)
+    
+    
+            
+#    with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
+#        for individualFile in files:
+#            zf.write('static/output/' + individualFile, "/"+individualFile)
+
+#    return        
+
+
+
+#zipFiles()
 #getAllStates()
 #scraperNoScraping("")
 #print("program done")

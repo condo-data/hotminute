@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect,request, current_app, url_for,send_from_directory
+from flask import render_template, flash, redirect,request, current_app, url_for,send_from_directory, send_file
 from app import app
 from .forms import CondoForm, DownloadForm
 import condo_data
@@ -6,6 +6,8 @@ import os
 import time
 import datetime
 from concurrent.futures import ThreadPoolExecutor
+import zipfile
+from io import BytesIO
 
 #import celery
 
@@ -44,7 +46,7 @@ def index():
         time.sleep(40)
             
         
-        return redirect(url_for("loadpage_1", state_selected=state_selected)) 
+        return redirect(url_for("downloadpage", state_selected=state_selected)) 
  
     return render_template('index.html',form=form)
                   
@@ -69,10 +71,14 @@ def loadpage_1(state_selected=None):
 @app.route('/loadpage_2/<state_selected>', methods=['GET', 'POST'])
 def loadpage_2(state_selected=None):
     
+    
+    if state_selected == "ALL" and future.done():
+        return redirect(url_for("loadpage_1", state_selected=state_selected)) 
+    else:
     #print("has gone to next 2")
-    print(future.done())
-    while not future.done():
-        pass
+        print(future.done())
+        while not future.done():
+            pass
     #print("done 2")
 
     
@@ -83,13 +89,19 @@ def loadpage_2(state_selected=None):
 def downloadpage(state_selected=None):
     
     form = DownloadForm()
+    fn = ""
     
-    mydate = datetime.datetime.now()
-    month = mydate.strftime("%B")
-    year = mydate.year
-    fn = str(month) + str(year) + "_" + state_selected + "_Condo_Data.csv"
+    if state_selected != 'ALL':
+        mydate = datetime.datetime.now()
+        month = mydate.strftime("%B")
+        year = mydate.year
+        fn = str(month) + str(year) + "_" + state_selected + "_Condo_Data.csv"
+    else:
+        fn = "allstates.zip"
+    
     msgs = future.result()
-    #print(msgs + " messages")
+    #print(msgs)
+    
     if form.validate_on_submit():
     
         return redirect(url_for("download", state_selected=state_selected, filename=fn)) 
@@ -98,6 +110,25 @@ def downloadpage(state_selected=None):
     
 @app.route('/download/<state_selected>/<filename>', methods=['GET', 'POST'])
 def download(state_selected=None, filename=None):
-    attachment_filename = filename
-    fn = state_selected + "_Condo_Data.csv"
-    return send_from_directory(directory=app.static_folder + "//output//", filename=fn, as_attachment=True, attachment_filename=attachment_filename)
+    directory = app.static_folder + "//output//"
+    if state_selected == 'ALL':
+        memory_file = BytesIO()
+        #memory_file = "static/output/All_States.zip"
+        files = []
+    
+        for file in os.listdir(directory):
+            if file.endswith(".csv"):
+                files.append(os.path.join(file))
+  
+            
+        with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
+            for individualFile in files:
+                zf.write(directory + individualFile, "/"+individualFile)
+
+                
+        memory_file.seek(0)
+        return send_file(memory_file, attachment_filename=filename, as_attachment=True)
+    else: 
+        attachment_filename = filename
+        fn = state_selected + "_Condo_Data.csv"
+        return send_from_directory(directory=directory, filename=fn, as_attachment=True, attachment_filename=attachment_filename)
