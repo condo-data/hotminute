@@ -19,17 +19,18 @@ def scrapeSinglePage(text):
     table = soup.find_all('table')[4]
 
     str = ""
-
+    count = 0 
     rows = table.find_all('tr')
     for row in rows:
         cols = row.find_all('td')
         temp = ",".join([re.sub('\s{2,}', ' ',x.text) for x in cols]) + "\n"
 
         if "CondoName" not in temp:
+            count+=1
             str += temp
     #print(str)
 
-    return str
+    return str , count
 
 
 def isThereNext(text):
@@ -63,6 +64,10 @@ def scraperNoScraping(state):
     response = br.submit()
     text = response.read()
     
+    ## look for 2570 records were selected, and do regex and get the number!!!!!!
+    ##make msgs a list
+    ## appened msg if line counts dont match
+    
     filename = state + "_Condo_Data.csv"
 
     ans="CondoName,Condo ID /Submission,Address,County,ApprovalMethod,Compositionof Project,Comments,DocumentStatus,ManufacturedHousing,FHAConcentration,Status,StatusDate,ExpirationDate\n"
@@ -74,10 +79,10 @@ def scraperNoScraping(state):
     while isThereNext(text):
         #if response.code == 500:
         #    continue
-        count += 1
+       
         try:
             text = getNext(text,br)
-            count = 0
+            
             #for form in br.forms():
             #    count+=1
             #    print form
@@ -89,7 +94,9 @@ def scraperNoScraping(state):
             break
             
         if len(text)> 0:
-            ans += scrapeSinglePage(text)
+            tup = scrapeSinglePage(text)[0]
+            ans += tup[0]
+            count += tup[1]
         #print(count)
     d = time.time() - t0
     print "duration: %.2f s." % d
@@ -101,8 +108,8 @@ def scraperNoScraping(state):
     return msg
     
 def getAllStates():
-    states = app.config['STATES']
-    #states = [('GU', 'Guam'),('MI', 'Michigan')]
+    #states = app.config['STATES']
+    states = [('GU', 'Guam'),('MI', 'Michigan')]
     #('CT', 'Connecticut')]
     #states = [('AK', 'Alaska'),('AL', 'Alabama'),('AR', 'Arkansas'),( 'AZ', 'Arizona'),('CA', 'California'),('CO', 'Colorado'),
     #('CT', 'Connecticut'),('DC', 'District of Columbia'),('DE', 'Delaware'),('FL', 'Florida'),('GA', 'Georgia'), ('GU', 'Guam'),
