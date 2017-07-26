@@ -10,4 +10,3 @@ STATES = [('ALL', 'ALL STATES'),('AK', 'Alaska'),('AL', 'Alabama'),('AR', 'Arkan
     ('OK', 'Oklahoma'),('OR', 'Oregon'),('PA', 'Pennsylvania'),('PR', 'Puerto Rico'),('RI', 'Rhode Island'),('SC', 'South Carolina'),
     ('SD', 'South Dakota'),('TN', 'Tennessee'),('TX', 'Texas'),('UT', 'Utah'),('VA', 'Virginia'),('VI', 'Virgin Islands'),('VT', 'Vermont'),
     ('WA', 'Washington'),('WI', 'Wisconsin'),('WV', 'West Virginia'),('WY', 'Wyoming')]
-
