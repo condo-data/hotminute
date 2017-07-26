@@ -1,25 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 {% if msgs %}
+ {% if  msgs|length > 0  %}
+            <div class="alert alert-warning" style="margin-right:50%;">
+            
+            {% for msg in msgs %}
+            <strong>Warning!</strong>
+                {% if  msg|length > -1  %}
+                   <p> {{ msg }}</p>
+                {% endif %}
+            {% endfor%}
 
-    {% if state_selected == "ALL"  %}
-     <div class="alert alert-warning" style="margin-right:50%;">
-        <strong>Warning!</strong>
-    {% for msg in msgs %}
-           
-    {% if  msg|length > -1  %}
-
-           <p> {{ msg }}</p>
-     {% endif %}
-      {% endfor%}
-     {% endif %}
-    {% if state_selected != "ALL"  %}
-        <div class="alert alert-warning" style="margin-right:50%;">
-          <strong>Warning!</strong> <p> {{ msgs }}</p>
-     {% endif %}
-   
     </div>
-    
+    {% endif %}    
     {% endif %}
 
 

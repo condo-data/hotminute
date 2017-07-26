@@ -9,8 +9,6 @@ from io import BytesIO
 import zipfile
 from app import app
 
-
-
 def scrapeSinglePage(text):
     """Take all of the data from the html table and format it into 
     a list of lists to be easily processed later"""
@@ -28,7 +26,6 @@ def scrapeSinglePage(text):
         if "CondoName" not in temp:
             count+=1
             str += temp
-    #print(str)
 
     return str , count
 
@@ -42,19 +39,31 @@ def isThereNext(text):
         return True
     return False
 
-def getNext(text,br):
+def getNext(text,br,num_condos):
     """Get the response from the next page of condo data"""
-    #br.select_form(name="getMoreData")
     br.select_form(nr=2)
+    #br.form.find_control("FSTATE").readonly = False
+    #br.form.find_control("maxRows").readonly = False
+    #br.form.find_control("FSTATE").value = "DC"
+    #br.form.find_control("maxRows").value = str(num_condos-50)
+    #form.set_all_readonly(False)
+    #br.form.controls.FSTATE = ["DC"]
+    #control.maxRows = [num_condos-50]
+    #for control in br.form.controls:
+    #    print control
     response = br.submit(type='image')
     text = response.read()
-    
+
     return text
 
 def scraperNoScraping(state):
     url = "https://entp.hud.gov/idapp/html/condlook.cfm"
+    for x in range(0,5):
+        print('\n')
     print("program starting")
-    
+    print(state)
+    for x in range(0,5):
+        print('\n')
     br = mechanize.Browser()
     br.open(url)
 
@@ -63,95 +72,45 @@ def scraperNoScraping(state):
     br.form['fstate'] = [state,]
     response = br.submit()
     text = response.read()
-    
-    ## look for 2570 records were selected, and do regex and get the number!!!!!!
-    ##make msgs a list
-    ## appened msg if line counts dont match
+
+    regex = re.compile(r'[0-9]+ records were selected')
+    results = regex.findall(text)
+
+    num_condos = ""
+    for x in results:
+        num_condos = int(x.split(' ', 1)[0])
+
     
     filename = state + "_Condo_Data.csv"
-
+    
+    count = 0
     ans="CondoName,Condo ID /Submission,Address,County,ApprovalMethod,Compositionof Project,Comments,DocumentStatus,ManufacturedHousing,FHAConcentration,Status,StatusDate,ExpirationDate\n"
     t0 = time.time()
-    ans += scrapeSinglePage(text)  
-    
-    count = 0;
+    tup = scrapeSinglePage(text)
+    ans += tup[0]  
+    count += int(tup[1])
     msg = ""
+
     while isThereNext(text):
-        #if response.code == 500:
-        #    continue
-       
         try:
-            text = getNext(text,br)
-            
-            #for form in br.forms():
-            #    count+=1
-            #    print form
-            #    print count
-            #print("done")
+            text = getNext(text,br,num_condos)
+
         except:
-            #print("Error: " + str(response.code))
-            msg= "Site error occured in reading data for " + state + ", not all data was retrieved."
+            msg="Site error occured in reading data for " + state + ", not all data was retrieved."
             break
             
         if len(text)> 0:
-            tup = scrapeSinglePage(text)[0]
+            tup = scrapeSinglePage(text)
             ans += tup[0]
-            count += tup[1]
-        #print(count)
+            count += int(tup[1])
+
     d = time.time() - t0
     print "duration: %.2f s." % d
-    
+
     with open(app.static_folder+ "//output//" + filename, "wb") as file:
     #with open("static/output/" + filename, "wb") as file:
         file.write(ans)
-    #print msg
+    if count != num_condos:
+        msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
+
     return msg
-    
-def getAllStates():
-    #states = app.config['STATES']
-    states = [('GU', 'Guam'),('MI', 'Michigan')]
-    #('CT', 'Connecticut')]
-    #states = [('AK', 'Alaska'),('AL', 'Alabama'),('AR', 'Arkansas'),( 'AZ', 'Arizona'),('CA', 'California'),('CO', 'Colorado'),
-    #('CT', 'Connecticut'),('DC', 'District of Columbia'),('DE', 'Delaware'),('FL', 'Florida'),('GA', 'Georgia'), ('GU', 'Guam'),
-    #('HI', 'Hawaii'),('IA', 'Iowa'),('ID', 'Idaho'),('IL', 'Illinois'),('IN', 'Indiana'),('KS', 'Kansas'),('KY', 'Kentucky'),
-    #('LA', 'Louisiana'),('MA', 'Massachusetts'),('MD', 'Maryland'),('ME', 'Maine'),('MI', 'Michigan'),('MN', 'Minnesota'),
-    #('MO', 'Missouri'),('MS', 'Mississippi'),('MT', 'Montana'),('NC', 'North Carolina'),('ND', 'North Dakota'),('NE', 'Nebraska'),
-    #('NH', 'New Hampshire'),('NJ', 'New Jersey'),('NM', 'New Mexico'),('NV', 'Nevada'),('NY', 'New York'),('OH', 'Ohio'),
-    #('OK', 'Oklahoma'),('OR', 'Oregon'),('PA', 'Pennsylvania'),('PR', 'Puerto Rico'),('RI', 'Rhode Island'),('SC', 'South Carolina'),
-    #('SD', 'South Dakota'),('TN', 'Tennessee'),('TX', 'Texas'),('UT', 'Utah'),('VA', 'Virginia'),('VI', 'Virgin Islands'),('VT', 'Vermont'),
-    #('WA', 'Washington'),('WI', 'Wisconsin'),('WV', 'West Virginia'),('WY', 'Wyoming')]
-    
-    t0 = time.time()
-    msgs = []
-    for x in states:
-        print(x[0])
-        msgs.append(scraperNoScraping(x[0]))
-    d = time.time() - t0
-    print "duration of all states : %.2f s." % d
-    print(msgs)
-    return msgs
-    
-#def zipFiles():
-    #memory_file = BytesIO()
-#    memory_file = "static/output/All_States.zip"
-#    files = []
-    
-#    for file in os.listdir("static/output/"):
-#        if file.endswith(".csv"):
-#            files.append(os.path.join(file))
-#    print(files)
-    
-    
-            
-#    with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
-#        for individualFile in files:
-#            zf.write('static/output/' + individualFile, "/"+individualFile)
-
-#    return        
-
-
-
-#zipFiles()
-#getAllStates()
-#scraperNoScraping("")
-#print("program done")

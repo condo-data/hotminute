@@ -1,15 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SelectField, SubmitField
-from wtforms import validators
-from wtforms.validators import DataRequired
+from wtforms import SelectField, SubmitField
 from app import app
     
 class CondoForm(FlaskForm):
-    
-    
     states=app.config['STATES']
     
-   
     state = SelectField(
         'State', 
         choices=states, )
@@ -17,6 +12,4 @@ class CondoForm(FlaskForm):
     submit = SubmitField()
     
 class DownloadForm(FlaskForm):
-    
     submit = SubmitField("Download")
- 
