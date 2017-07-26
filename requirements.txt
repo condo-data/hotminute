@@ -1,6 +1,5 @@
 amqp==2.2.1
 awsebcli==3.10.4
-backports.ssl-match-hostname==3.5.0.1
 BeautifulSoup==3.2.1
 beautifulsoup4==4.6.0
 billiard==3.5.0.3
@@ -25,7 +24,6 @@ futures==3.1.1
 html5lib==1.0b10
 httplib2==0.8
 idna==2.5
-ipython==1.2.1
 itsdangerous==0.24
 Jinja2==2.9.6
 jmespath==0.9.3
@@ -45,13 +43,10 @@ pexpect==3.1
 Pillow==2.3.0
 pycrypto==2.6.1
 pyparsing==2.0.1
-python-apt===0.9.3.5ubuntu2
 python-dateutil==2.6.1
 pytz==2012rc0
 PyYAML==3.12
 requests==2.9.1
-SecretStorage==2.0.0
-selenium==3.4.3
 semantic-version==2.5.0
 simplegeneric==0.8.1
 simplejson==3.3.1
@@ -61,13 +56,8 @@ tabulate==0.7.5
 termcolor==1.1.0
 urllib3==1.21.1
 vine==1.1.4
-virtualenv==1.11.4
-virtualenv-clone==0.2.4
-virtualenvwrapper==4.1.1
-wadllib==1.3.2
 wcwidth==0.1.7
 webencodings==0.5.1
 websocket-client==0.44.0
 Werkzeug==0.12.2
 WTForms==2.1
-zope.interface==4.0.5
