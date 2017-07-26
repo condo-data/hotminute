@@ -31,8 +31,6 @@ Jinja2==2.9.6
 jmespath==0.9.3
 keyring==3.5
 kombu==4.0.2
-lazr.restfulclient==0.13.3
-lazr.uri==1.0.3
 lockfile==0.8
 lpthw.web==1.1
 MarkupSafe==1.0
