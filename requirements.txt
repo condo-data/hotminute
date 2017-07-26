@@ -1,7 +1,6 @@
 amqp==2.2.1
 awsebcli==3.10.4
 backports.ssl-match-hostname==3.5.0.1
-BeautifulSoup==3.2.1
 beautifulsoup4==4.6.0
 billiard==3.5.0.3
 blessed==1.14.2
