@@ -1,0 +1,18 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+    <form class="form-inline" action="{{ url_for('index') }}" method="POST" name="condoform">
+   <div class="form-group">
+        {{ form.hidden_tag() }}
+        
+           
+            <p >Please select a state: {{ form.state }} <p> 
+           
+             {{ form.submit() }} <br>
+        
+</div>
+      </form>
+    
+{% endblock %}
