@@ -5,6 +5,7 @@
 *.c9
 .c9/
 *.git
+app.db
 search.db
 
 # Except this file
