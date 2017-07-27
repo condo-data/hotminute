@@ -107,7 +107,7 @@ def scraperNoScraping(state):
     d = time.time() - t0
     print "duration: %.2f s." % d
 
-    with open(app.static_folder+ "//output//" + filename, "wb") as file:
+    with open(app.static_folder+ "/output/" + filename, "wb") as file:
     #with open("static/output/" + filename, "wb") as file:
         file.write(ans)
     if count != num_condos:
