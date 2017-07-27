@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from BeautifulSoup import BeautifulSoup, SoupStrainer
 import requests
 import time
 import re
@@ -8,38 +8,44 @@ import os
 from io import BytesIO
 import zipfile
 #import lxml
-from app import app
+#from app import app
 
 def scrapeSinglePage(text):
     """Take all of the data from the html table and format it into 
     a list of lists to be easily processed later"""
-    #strainer = SoupStrainer('table', attrs={'id': 'form1'})
-    #soup = BeautifulSoup(text, "lxml", parse_only=strainer)
-    soup = BeautifulSoup(text, "html5lib")
-    print(soup)
+    strainer = SoupStrainer('table', {'width':"100%", 'border':"1", 'cellpadding':"2", 'cellspacing':"1"})
+    soup = BeautifulSoup(text, parseOnlyThese=strainer)
+    #soup = BeautifulSoup(text)
+    #print(soup)
+    #print(soup)
 
-    table = soup.find_all('table')[4]
+    #table = 
+    #for tr in table:
+    #    print(tr)
+    
 
     str = ""
     count = 0 
-    rows = table.find_all('tr')
+    rows = soup.table.findAll('tr')
     for row in rows:
-        cols = row.find_all('td')
+        cols = row.findAll('td')
         temp = ",".join([re.sub('\s{2,}', ' ',x.text) for x in cols]) + "\n"
 
         if "CondoName" not in temp:
             count+=1
             str += temp
+            #print(str)
 
     return str , count
 
 
 def isThereNext(text):
     """Check there is a Next button on the page."""
-    soup = BeautifulSoup(text, "html5lib")
+    soup = BeautifulSoup(text)
+    #print(soup.text)
 
-    if("[Next]" in soup.get_text()):
-
+    if("[Next]" in soup.text):
+        #print("wat")
         return True
     return False
 
@@ -62,11 +68,11 @@ def getNext(text,br,num_condos):
 
 def scraperNoScraping(state):
     url = "https://entp.hud.gov/idapp/html/condlook.cfm"
-    for x in range(0,5):
+    for x in range(0,2):
         print('\n')
     print("program starting")
     print(state)
-    for x in range(0,5):
+    for x in range(0,2):
         print('\n')
     br = mechanize.Browser()
     br.open(url)
@@ -115,12 +121,12 @@ def scraperNoScraping(state):
     d = time.time() - t0
     print "duration: %.2f s." % d
 
-    with open(app.static_folder+ "/output/" + filename, "wb") as file:
-    #with open("static/output/" + filename, "wb") as file:
+    #with open(app.static_folder+ "/output/" + filename, "wb") as file:
+    with open("static/output/" + filename, "wb") as file:
         file.write(ans)
     if count != num_condos:
         msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
 
     return msg
 
-scraperNoScraping('GU')
+scraperNoScraping('AK')
