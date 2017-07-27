@@ -1,5 +1,5 @@
 # Ignore everything in this directory
-!*
+*
 *.pyc
 *.pyo
 *.c9
@@ -10,4 +10,5 @@ search.db
 
 # Except this file
 !.gitignore
+!.gitkeep
 
