@@ -74,7 +74,7 @@ def downloadpage(state_selected=None):
     
 @app.route('/download/<state_selected>/<filename>', methods=['GET', 'POST'])
 def download(state_selected=None, filename=None):
-    directory = app.static_folder + "//output//"
+    directory = app.static_folder + "/output/"
     if state_selected == 'ALL':
         memory_file = BytesIO()
         files = []

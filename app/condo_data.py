@@ -7,12 +7,16 @@ import csv
 import os
 from io import BytesIO
 import zipfile
-from app import app
+#import lxml
+#from app import app
 
 def scrapeSinglePage(text):
     """Take all of the data from the html table and format it into 
     a list of lists to be easily processed later"""
+    #strainer = SoupStrainer('table', attrs={'id': 'form1'})
+    #soup = BeautifulSoup(text, "lxml", parse_only=strainer)
     soup = BeautifulSoup(text, "html5lib")
+    print(soup)
 
     table = soup.find_all('table')[4]
 
@@ -68,6 +72,10 @@ def scraperNoScraping(state):
     br.open(url)
 
     response = br.response()
+    
+
+    
+    
     br.select_form(name='condoform')
     br.form['fstate'] = [state,]
     response = br.submit()
@@ -107,10 +115,12 @@ def scraperNoScraping(state):
     d = time.time() - t0
     print "duration: %.2f s." % d
 
-    with open(app.static_folder+ "/output/" + filename, "wb") as file:
-    #with open("static/output/" + filename, "wb") as file:
+    #with open(app.static_folder+ "/output/" + filename, "wb") as file:
+    with open("static/output/" + filename, "wb") as file:
         file.write(ans)
     if count != num_condos:
         msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
 
     return msg
+
+scraperNoScraping('GU')
