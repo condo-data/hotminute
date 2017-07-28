@@ -16,7 +16,7 @@
     {% endif %}
 
 
-       <form action="{{ url_for('downloadpage', state_selected=state_selected, filename=filename ) }}" method="POST" name="downloadform">
+       <form action="{{ url_for('downloadpage', state_selected=state_selected,site=site ) }}" method="POST" name="downloadform">
             
             {{ form.hidden_tag() }}
              

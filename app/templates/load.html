@@ -6,10 +6,10 @@
 $(function poll() {
         var url = document.location.pathname;
         var values = url.split("/");
+      
         $.ajax({
             url: '/done',
-            data : {state_selected : values[2] },
-            
+            data : {state_selected : values[2], site : values[3] },
             type: 'GET',
             contentType: 'application/json;charset=UTF-8',
             success: function(response) {

@@ -23,38 +23,57 @@ def index():
     futures[:] = []
     if form.submit1.data and form.validate_on_submit():
         state_selected = request.form['state']
-        
+        site = "hud"
         if state_selected == "ALL":
             states = app.config["STATES"]
             states = states[1:]
             
             for state in states:
-                future = executor.submit(condo_data.scraperNoScraping, state[0])
+                future = executor.submit(condo_data.scraperNoScraping, state[0], site)
                 futures.append(future)
 
         else:
-            future = executor.submit(condo_data.scraperNoScraping, state_selected)
+            future = executor.submit(condo_data.scraperNoScraping, state_selected, site)
             futures.append(future)
 
         
-        return redirect(url_for("load", state_selected=state_selected))    
+        return redirect(url_for("load", state_selected=state_selected, site=site))    
+        
     elif va_form.vasubmit.data and va_form.validate_on_submit():
-        print("yay")
-        return "yes"
+        site = "va"
+        state_selected = request.form.get('state')
+        print(state_selected)
+        
+        if state_selected == "ALL":
+            states = app.config["VA_STATES"]
+            states = states[1:]
+            
+            for state in states:
+                future = executor.submit(condo_data.scraperNoScraping, state[0], site)
+                futures.append(future)
+
+        else:
+            future = executor.submit(condo_data.scraperNoScraping, state_selected, site)
+            futures.append(future)
+
+        
+        return redirect(url_for("load", state_selected=state_selected,site=site))    
  
     return render_template('index.html',form=form, va_form=va_form)
           
-@app.route('/load/<state_selected>', methods=['GET', 'POST'])
-def load(state_selected=None):
-    return render_template('load.html')
+@app.route('/load/<state_selected>/<site>', methods=['GET', 'POST'])
+def load(state_selected=None,site=None):
+    return render_template('load.html', state_selected=state_selected,site=site)
         
-@app.route('/downloadpage/<state_selected>', methods=['GET', 'POST'])
-def downloadpage(state_selected=None):
+@app.route('/downloadpage/<state_selected>/<site>', methods=['GET', 'POST'])
+def downloadpage(state_selected=None, site=None):
     
     form = DownloadForm()
     fn = ""
     msgs = []
     fileType = ""
+    origin = site.upper()
+    
     
     if state_selected == 'ALL':
         fileType = ".zip"
@@ -64,18 +83,21 @@ def downloadpage(state_selected=None):
     mydate = datetime.datetime.now()
     month = mydate.strftime("%B")
     year = mydate.year
-    fn = str(month) + str(year) + "_" + state_selected + "_Condo_Data" + fileType
+    fn = str(month) + str(year) + "_" + state_selected + "_" + origin + "Condo_Data" + fileType
 
     #get all messages 
     for x in futures:
-        if len(x.result()) > 0:
+        #print(x.result)
+        #print(x.result)
+        if len(x.result()) > 1:
+            
             msgs.append(x.result()) 
             #print(msgs)
     
     if form.validate_on_submit():
         return redirect(url_for("download", state_selected=state_selected, filename=fn)) 
 
-    return render_template('download.html',form=form, state_selected=state_selected, filename=fn, msgs=msgs)
+    return render_template('download.html',form=form, state_selected=state_selected, filename=fn, msgs=msgs, site=site)
     
 @app.route('/download/<state_selected>/<filename>', methods=['GET', 'POST'])
 def download(state_selected=None, filename=None):
@@ -103,7 +125,8 @@ def download(state_selected=None, filename=None):
 @app.route('/done/', methods=['GET', "POST"])
 def isDone():
     state_selected  = request.args.get('state_selected', None)
+    site  = request.args.get('site', None)
     isDone = set([x.done() for x in futures])
     
     if len(isDone) == 1 and True in isDone:
-        return jsonify({'state_selected': state_selected, 'result':url_for("downloadpage", state_selected=state_selected)})
+        return jsonify({'state_selected': state_selected, 'result':url_for("downloadpage", state_selected=state_selected, site=site)})
