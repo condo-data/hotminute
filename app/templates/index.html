@@ -2,17 +2,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    <form class="form-inline" action="{{ url_for('index') }}" method="POST" name="condoform">
-   <div class="form-group">
+<div class="container">
+    
+   <div class="well" >
+       <form class="form-inline" action="{{ url_for('index') }}" method="POST" name="condoform">
         {{ form.hidden_tag() }}
         
+     
+           <h4>HUD.gov</h4>
+            <p>Please select a state: {{ form.state }} </p>
            
-            <p >Please select a state: {{ form.state }} <p> 
-           
-             {{ form.submit() }} <br>
-        
-</div>
+             {{ form.submit1 }} <br>
       </form>
+</div>
+
+   <div class="well" >
+       <form class="form-inline" action="{{ url_for('index') }}" method="POST" name="condoform">
+        {{ va_form.hidden_tag() }}
+        
+     
+           <h4>VA.gov</h4>
+            <p>Please select a state: {{ va_form.state }} </p>
+           
+             {{ va_form.vasubmit }} <br>
+      </form>
+</div>
+     
+    
+    </div>
+
     
 {% endblock %}

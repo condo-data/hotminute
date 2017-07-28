@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect,request, current_app, url_for,send_from_directory, send_file, jsonify
 from app import app
-from .forms import CondoForm, DownloadForm
+from .forms import CondoForm, DownloadForm, VACondoForm
 import condo_data
 import os
 import time
@@ -17,9 +17,11 @@ futures = []
 def index():
     
     form = CondoForm()
-
-    if form.validate_on_submit():
-        
+    va_form = VACondoForm()
+    
+    #futures = []
+    futures[:] = []
+    if form.submit1.data and form.validate_on_submit():
         state_selected = request.form['state']
         
         if state_selected == "ALL":
@@ -31,14 +33,16 @@ def index():
                 futures.append(future)
 
         else:
-            future = executor.submit( condo_data.scraperNoScraping, state_selected)
+            future = executor.submit(condo_data.scraperNoScraping, state_selected)
             futures.append(future)
 
-        time.sleep(0)
-         
+        
         return redirect(url_for("load", state_selected=state_selected))    
+    elif va_form.vasubmit.data and va_form.validate_on_submit():
+        print("yay")
+        return "yes"
  
-    return render_template('index.html',form=form)
+    return render_template('index.html',form=form, va_form=va_form)
           
 @app.route('/load/<state_selected>', methods=['GET', 'POST'])
 def load(state_selected=None):
@@ -46,6 +50,7 @@ def load(state_selected=None):
         
 @app.route('/downloadpage/<state_selected>', methods=['GET', 'POST'])
 def downloadpage(state_selected=None):
+    
     form = DownloadForm()
     fn = ""
     msgs = []
@@ -65,7 +70,7 @@ def downloadpage(state_selected=None):
     for x in futures:
         if len(x.result()) > 0:
             msgs.append(x.result()) 
-            print(msgs)
+            #print(msgs)
     
     if form.validate_on_submit():
         return redirect(url_for("download", state_selected=state_selected, filename=fn)) 
