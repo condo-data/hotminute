@@ -19,7 +19,7 @@ def scrapeSinglePage(text, site):
         #"
     else:
         strainer = SoupStrainer('table', {"id":"searchForm:mainpanel", "cellpadding":"10", "cellspacing":"0", "class":"inputpanel"})
-    soup = BeautifulSoup(text.decode('utf-8'), parseOnlyThese=strainer)
+    soup = BeautifulSoup(text, parseOnlyThese=strainer)
     
     #soup = BeautifulSoup(text)
     #print(soup)
@@ -144,8 +144,12 @@ def scraperNoScraping(state, site, reportType):
        
 
 
-        if count != num_condos:
+        if count != num_condos and reportType != "details":
             msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
+        elif count != num_condos*4:
+            msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
+            print(count)
+            print(num_condos)
     else:
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
     #d = time.time() - t0
