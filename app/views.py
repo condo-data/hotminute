@@ -23,7 +23,7 @@ def index():
     futures[:] = []
     if form.submit1.data and form.validate_on_submit():
         state_selected = request.form['state']
-        reportType = request.va_form['rt']
+        reportType = ""
         print(reportType)
         site = "hud"
         if state_selected == "ALL":
@@ -44,7 +44,7 @@ def index():
     elif va_form.vasubmit.data and va_form.validate_on_submit():
         site = "va"
         state_selected = request.form.get('state')
-        reportType = request.va_form['rt']
+        reportType = request.form.get('rt')
         print(state_selected)
         
         if state_selected == "ALL":
