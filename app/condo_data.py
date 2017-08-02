@@ -159,5 +159,5 @@ def scraperNoScraping(state, site, reportType):
     print(msg)
     return msg
 
-#scraperNoScraping('AK', "hud")
+#scraperNoScraping('AK', "hud", "details")
 #('AK', "va")

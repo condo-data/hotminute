@@ -44,6 +44,7 @@ def index():
     elif va_form.vasubmit.data and va_form.validate_on_submit():
         site = "va"
         state_selected = request.form.get('state')
+        reportType = request.va_form['rt']
         print(state_selected)
         
         if state_selected == "ALL":
