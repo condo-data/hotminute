@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, SubmitField
+from wtforms import SelectField, SubmitField, RadioField
 from app import app
     
 class CondoForm(FlaskForm):
@@ -17,6 +17,9 @@ class VACondoForm(FlaskForm):
     state = SelectField(
         'State', 
         choices=states, )
+        
+    rt = RadioField('Report Type', choices=[('summary','summary'),('details','details')])
+
         
     vasubmit = SubmitField('Get VA.gov data')
     
