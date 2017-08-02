@@ -44,7 +44,7 @@ def scrapeSinglePage(text, site):
             #print(temp)
             if "," in temp and "Your search returned" not in temp and "Condo Name" not in temp:
                 count+=1
-                print(temp)
+                #print(temp)
                 #temp = temp.replace(",", "")
                 str += temp
             #print(str)
@@ -162,8 +162,8 @@ def scraperNoScraping(state, site, reportType):
          ans = ans.replace("&nbsp", "")
     #print(ans)
     #print state +"duration: %.2f s." % d
-    #with open(app.static_folder+ "/output/" + filename, "wb") as file:
-    with open("static/output/" + filename, "wb") as file:
+    with open(app.static_folder+ "/output/" + filename, "wb") as file:
+    #with open("static/output/" + filename, "wb") as file:
         file.write(ans)    
     #print(msg)
     return msg
