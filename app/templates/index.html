@@ -23,14 +23,14 @@
      
            <h4>VA.gov</h4>
             <p>Please select a state: {{ va_form.state }} </p>
-            <p>Please select report type: <tr> 
+            <p>Please select report type:  
             {% for subfield in va_form.rt %}
-
+<tr>
     <td>{{ subfield.label }} : {{ subfield }}</td>
 
-
-{% endfor %}
 </tr>
+{% endfor %}
+
 </p>
            
              {{ va_form.vasubmit }} <br>

@@ -23,17 +23,18 @@ def index():
     futures[:] = []
     if form.submit1.data and form.validate_on_submit():
         state_selected = request.form['state']
+        reportType = request.form['rt']
         site = "hud"
         if state_selected == "ALL":
             states = app.config["STATES"]
             states = states[1:]
             
             for state in states:
-                future = executor.submit(condo_data.scraperNoScraping, state[0], site)
+                future = executor.submit(condo_data.scraperNoScraping, state[0], site, reportType)
                 futures.append(future)
 
         else:
-            future = executor.submit(condo_data.scraperNoScraping, state_selected, site)
+            future = executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType)
             futures.append(future)
 
         
