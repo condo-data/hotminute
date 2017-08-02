@@ -35,7 +35,7 @@ def scrapeSinglePage(text, site):
     rows = soup.table.findAll('tr')
     for row in rows:
         cols = row.findAll('td')
-        temp = ",".join([re.sub('\s{2,}', ' ',x.text) for x in cols]) + "\n"
+        temp = ",".join([re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]) + "\n"
         if site == "hud":
             if "CondoName" not in temp:
                 count+=1
@@ -44,6 +44,8 @@ def scrapeSinglePage(text, site):
             #print(temp)
             if "," in temp and "Your search returned" not in temp and "Condo Name" not in temp:
                 count+=1
+                print(temp)
+                #temp = temp.replace(",", "")
                 str += temp
             #print(str)
 
@@ -143,25 +145,28 @@ def scraperNoScraping(state, site, reportType):
 
        
 
-
+        if site == "hud":
+            reportType = ""
+            
         if count != num_condos and reportType != "details":
             msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
-        elif count != num_condos*4:
+        elif count != num_condos*5:
             msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
-            print(count)
-            print(num_condos)
+            #print(count)
+            #print(num_condos)
     else:
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
     #d = time.time() - t0
     if site == "va":
          ans = ans.encode('utf-8')
+         ans = ans.replace("&nbsp", "")
     #print(ans)
     #print state +"duration: %.2f s." % d
-    with open(app.static_folder+ "/output/" + filename, "wb") as file:
-    #with open("static/output/" + filename, "wb") as file:
+    #with open(app.static_folder+ "/output/" + filename, "wb") as file:
+    with open("static/output/" + filename, "wb") as file:
         file.write(ans)    
-    print(msg)
+    #print(msg)
     return msg
 
-#scraperNoScraping('AK', "hud", "details")
+#scraperNoScraping('AK', "va", "details")
 #('AK', "va")
