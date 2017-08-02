@@ -150,13 +150,15 @@ def scraperNoScraping(state, site, reportType):
 
         if site == "hud":
             reportType = ""
-            
+ 
         if count != num_condos and reportType != "details":
+
             msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
-        elif count != num_condos*5:
+        elif count != num_condos*5 and reportType == "details":
             msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
             #print(count)
             #print(num_condos)
+        #print(msg)
     else:
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
     #d = time.time() - t0
@@ -171,5 +173,5 @@ def scraperNoScraping(state, site, reportType):
     #print(msg)
     return msg
 
-#scraperNoScraping('AK', "va", "details")
+scraperNoScraping('AZ', "va", "summary")
 #('AK', "va")
