@@ -143,7 +143,8 @@ def isDone():
 
     isDone = set([x.done() for x in futures])
     
-    if len(isDone) == 1 and True in isDone:
+    #if len(isDone) == 1 and True in isDone:
+    if len(futures) < 1:
         #print(futures)
         del futures[:]  
         #print(futures)
