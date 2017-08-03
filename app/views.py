@@ -85,7 +85,7 @@ def downloadpage(state_selected=None, site=None):
     
     mydate = datetime.datetime.now()
     month = mydate.strftime("%B")
-    day = d.strftime('%d')
+    day = mydate.strftime('%d')
     year = mydate.year
     fn = str(month) + str(day)+_ + str(year) + "_" + state_selected + "_" + origin + "_Condo_Data" + fileType
 

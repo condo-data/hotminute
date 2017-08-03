@@ -1,12 +1,8 @@
-amqp==2.2.1
 awsebcli==3.10.4
 BeautifulSoup==3.2.1
 beautifulsoup4==4.2.1
-billiard==3.5.0.3
 blessed==1.14.2
-botocore==1.5.88
 cement==2.8.2
-certifi==2017.4.17
 chardet==3.0.4
 click==6.7
 colorama==0.3.7
@@ -22,11 +18,9 @@ freeze==1.0.10
 futures==3.1.1
 html5lib==1.0b10
 httplib2==0.8
-idna==2.5
 itsdangerous==0.24
 Jinja2==2.9.6
 jmespath==0.9.3
-keyring==3.5
 kombu==4.0.2
 lockfile==0.8
 lpthw.web==1.1
@@ -34,7 +28,6 @@ lxml==3.3.3
 MarkupSafe==1.0
 mechanize==0.3.5
 mercurial==2.8.2
-numpy==1.8.2
 oauth==1.0.1
 paramiko==1.10.1
 pathspec==0.5.0
@@ -54,7 +47,6 @@ stevedore==0.14.1
 tabulate==0.7.5
 termcolor==1.1.0
 urllib3==1.21.1
-vine==1.1.4
 wcwidth==0.1.7
 webencodings==0.5.1
 websocket-client==0.44.0
