@@ -20,7 +20,7 @@ def index():
     va_form = VACondoForm()
     
     #futures = []
-    futures[:] = []
+    #futures[:] = []
     if form.submit1.data and form.validate_on_submit():
         state_selected = request.form['state']
         reportType = ""
@@ -132,4 +132,8 @@ def isDone():
     isDone = set([x.done() for x in futures])
     
     if len(isDone) == 1 and True in isDone:
+        print(futures)
+        for x in futures:
+            del futures[0]
+        print(futures)
         return jsonify({'state_selected': state_selected, 'result':url_for("downloadpage", state_selected=state_selected, site=site)})
