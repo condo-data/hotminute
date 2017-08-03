@@ -20,7 +20,7 @@ def index():
     va_form = VACondoForm()
     
     #futures = []
-    #futures[:] = []
+    futures[:] = []
     if form.submit1.data and form.validate_on_submit():
         state_selected = request.form['state']
         reportType = ""
