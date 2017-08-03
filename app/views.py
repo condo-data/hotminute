@@ -87,7 +87,7 @@ def downloadpage(state_selected=None, site=None):
     month = mydate.strftime("%B")
     day = mydate.strftime('%d')
     year = mydate.year
-    fn = str(month) + str(day)+ "_" + str(year) + "_" + state_selected + "_" + origin + "_Condo_Data" + fileType
+    fn = str(month) +  "_" +  str(day)+ "_" + str(year) + "_" + state_selected + "_" + origin + "_Condo_Data" + fileType
 
     #get all messages 
     for x in futures:
