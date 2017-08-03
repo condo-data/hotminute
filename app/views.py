@@ -19,6 +19,7 @@ def index():
     form = CondoForm()
     va_form = VACondoForm()
     
+    
     #futures = []
     futures[:] = []
     if form.submit1.data and form.validate_on_submit():
@@ -132,11 +133,18 @@ def isDone():
     site  = request.args.get('site', None)
     
     #print(futures.ALL_C)
+    print(futures)
+    for x in futures:
+        
+        if x.done():
+            futures.remove(x)
+    print(futures)
+        
 
     isDone = set([x.done() for x in futures])
     
     if len(isDone) == 1 and True in isDone:
-        print(futures)
+        #print(futures)
         del futures[:]  
-        print(futures)
+        #print(futures)
         return jsonify({'state_selected': state_selected, 'result':url_for("downloadpage", state_selected=state_selected, site=site)})
