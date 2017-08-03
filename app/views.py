@@ -129,6 +129,10 @@ def download(state_selected=None, filename=None):
 def isDone():
     state_selected  = request.args.get('state_selected', None)
     site  = request.args.get('site', None)
+    
+    #print(futures.ALL_C)
+    results = concurrent.futures.wait( futures )
+    print(results)
     isDone = set([x.done() for x in futures])
     
     if len(isDone) == 1 and True in isDone:
