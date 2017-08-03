@@ -90,10 +90,10 @@ def scraperNoScraping(state, site, reportType):
         url = "https://entp.hud.gov/idapp/html/condlook.cfm"
         ans="CondoName,Condo ID /Submission,Address,County,ApprovalMethod,Compositionof Project,Comments,DocumentStatus,ManufacturedHousing,FHAConcentration,Status,StatusDate,ExpirationDate\n"
 
-    #print('\n')
-    #print("program starting")
-    #print(state)
-    #print('\n')
+    print('\n')
+    print("program starting")
+    print(state)
+    print('\n')
     br = mechanize.Browser()
     br.open(url)
 
@@ -125,7 +125,7 @@ def scraperNoScraping(state, site, reportType):
     filename = state + "_Condo_Data.csv"
     
     count = 0
-    #t0 = time.time()
+    t0 = time.time()
     if "No records match all the selection criteria" not in text:
         tup = scrapeSinglePage(text,site)
   
@@ -161,17 +161,17 @@ def scraperNoScraping(state, site, reportType):
         #print(msg)
     else:
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
-    #d = time.time() - t0
+    d = time.time() - t0
     if site == "va":
          ans = ans.encode('utf-8')
          ans = ans.replace("&nbsp", "")
     #print(ans)
-    #print state +"duration: %.2f s." % d
+    print state +"duration: %.2f s." % d
     with open(app.static_folder+ "/output/" + filename, "wb") as file:
     #with open("static/output/" + filename, "wb") as file:
         file.write(ans)    
     #print(msg)
     return msg
 
-scraperNoScraping('AZ', "va", "summary")
+#scraperNoScraping('AZ', "va", "summary")
 #('AK', "va")
