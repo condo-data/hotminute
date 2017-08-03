@@ -10,6 +10,7 @@ from io import BytesIO
 import zipfile
 #import lxml
 from app import app
+import sys
 
 def scrapeSinglePage(text, site):
     """Take all of the data from the html table and format it into 
@@ -90,10 +91,9 @@ def scraperNoScraping(state, site, reportType):
         url = "https://entp.hud.gov/idapp/html/condlook.cfm"
         ans="CondoName,Condo ID /Submission,Address,County,ApprovalMethod,Compositionof Project,Comments,DocumentStatus,ManufacturedHousing,FHAConcentration,Status,StatusDate,ExpirationDate\n"
 
-    print('\n')
-    print("program starting")
-    print(state)
-    print('\n')
+    print(state + " program starting", file=sys.stderr)
+   # print(state)
+
     br = mechanize.Browser()
     br.open(url)
 
@@ -166,7 +166,7 @@ def scraperNoScraping(state, site, reportType):
          ans = ans.encode('utf-8')
          ans = ans.replace("&nbsp", "")
     #print(ans)
-    print state +"duration: %.2f s." % d
+    print(state +" duration: %.2f s." % d, file=sys.stderr)
     with open(app.static_folder+ "/output/" + filename, "wb") as file:
     #with open("static/output/" + filename, "wb") as file:
         file.write(ans)    

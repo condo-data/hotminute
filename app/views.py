@@ -85,8 +85,9 @@ def downloadpage(state_selected=None, site=None):
     
     mydate = datetime.datetime.now()
     month = mydate.strftime("%B")
+    day = d.strftime('%d')
     year = mydate.year
-    fn = str(month) + str(year) + "_" + state_selected + "_" + origin + "Condo_Data" + fileType
+    fn = str(month) + str(day)+_ + str(year) + "_" + state_selected + "_" + origin + "_Condo_Data" + fileType
 
     #get all messages 
     for x in futures:
@@ -136,7 +137,6 @@ def isDone():
     
     if len(isDone) == 1 and True in isDone:
         print(futures)
-        for x in futures:
-            del futures[0]
+        del futures[:]  
         print(futures)
         return jsonify({'state_selected': state_selected, 'result':url_for("downloadpage", state_selected=state_selected, site=site)})
