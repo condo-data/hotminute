@@ -19,11 +19,11 @@ def scrapeSinglePage(text, site):
     else:
         strainer = SoupStrainer('table', {"id":"searchForm:mainpanel", "cellpadding":"10", "cellspacing":"0", "class":"inputpanel"})
     soup = BeautifulSoup(text, parseOnlyThese=strainer)
-    tracker.print_diff()
+    #tracker.print_diff()
     str = ""
     count = 0 
     rows = soup.table.findAll('tr')
-    tracker.print_diff()
+    #tracker.print_diff()
     for row in rows:
         cols = row.findAll('td')
         temp = ",".join([re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]) + "\n"
@@ -42,7 +42,7 @@ def scrapeSinglePage(text, site):
     del rows
     del soup
     del strainer
-    tracker.print_diff()
+   # tracker.print_diff()
     return str , count
 
 
@@ -66,7 +66,7 @@ def getNext(text,br,num_condos):
     return text
 
 def scraperNoScraping(state, site, reportType):
-    tracker.print_diff()
+    #tracker.print_diff()
     if site == "va":
         url = "https://vip.vba.va.gov/portal/VBAH/VBAHome/condopudsearch?paf_portalId=default&paf_communityId=100002&paf_pageId=500002&paf_dm=full&paf_gear_id=800001&paf_gm=content&paf_ps=_rp_800001_condoName%3D1_%26_rp_800001_condoId%3D1_%26_ps_800001%3Dmaximized%26_pid%3D800001%26_rp_800001_county%3D1_%26_rp_800001_stateCode%3D1_" + state + "%26_pm_800001%3Dview%26_md_800001%3Dview%26_rp_800001_cpbaction%3D1_performSearchPud%26_st_800001%3Dmaximized%26_rp_800001_reportType%3D1_" + reportType + "%26_rp_800001_regionalOffice%3D1_%26_rp_800001_city%3D1_&_requestid=455594"
         if reportType == "details":
@@ -79,24 +79,24 @@ def scraperNoScraping(state, site, reportType):
 
     print(state + " program starting")
     
-    tracker.print_diff()
+    #tracker.print_diff()
     
     br = mechanize.Browser()
     br.open(url)
     response = br.response()
     
-    tracker.print_diff()
+    #tracker.print_diff()
     
     if site == "hud":
         br.select_form(name='condoform')
         br.form['fstate'] = [state,]
         response = br.submit()
         
-    tracker.print_diff()
+   #tracker.print_diff()
     
     text = response.read()
     
-    tracker.print_diff()
+    #tracker.print_diff()
     
     regex = re.compile(r'[0-9]+ records')
     results = regex.findall(text)
@@ -106,7 +106,7 @@ def scraperNoScraping(state, site, reportType):
         num_condos = int(x.split(' ', 1)[0])
     
     filename = state + "_Condo_Data.csv"
-    tracker.print_diff()
+    #tracker.print_diff()
     count = 0
     t0 = time.time()
     if "No records match all the selection criteria" not in text:
@@ -144,18 +144,18 @@ def scraperNoScraping(state, site, reportType):
     else:
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
     del text
-    tracker.print_diff()
+    #tracker.print_diff()
     d = time.time() - t0
     if site == "va":
          ans = ans.encode('utf-8')
          ans = ans.replace("&nbsp", "")
-    tracker.print_diff()
+    #tracker.print_diff()
     print(state +" duration: %.2f s." % d)
 
     with open(app.static_folder+ "/output/" + filename, "wb") as file:
     #with open("static/output/" + filename, "wb") as file:
         file.write(ans)    
-    tracker.print_diff()
+    #tracker.print_diff()
     del ans
     return msg
 
