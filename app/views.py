@@ -8,7 +8,7 @@ import datetime
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 import zipfile
 from io import BytesIO
-executor = ProcessPoolExecutor(4)
+executor = ProcessPoolExecutor(3)
 futures = []
 
 
@@ -108,19 +108,20 @@ def downloadpage(state_selected=None, site=None):
 def download(state_selected=None, filename=None):
     directory = app.static_folder + "/output/"
     if state_selected == 'ALL':
-        memory_file = BytesIO()
+        #memory_file = BytesIO()
+        memory_file = "all_states.csv"
         files = []
         
         for file in os.listdir(directory):
             if file.endswith(".csv"):
                 files.append(os.path.join(file))
   
-        with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
+        with zipfile.ZipFile(directory + memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
             for individualFile in files:
                 zf.write(directory + individualFile, "/"+individualFile)
 
-        memory_file.seek(0)
-        return send_file(memory_file, attachment_filename=filename, as_attachment=True)
+        #memory_file.seek(0)
+        return send_file(directory + memory_file, attachment_filename=filename, as_attachment=True)
     else: 
         attachment_filename = filename
         
@@ -133,12 +134,12 @@ def isDone():
     site  = request.args.get('site', None)
     
     #print(futures.ALL_C)
-    print(futures)
+    print("LENGTH "+str(len(futures)))
     for x in futures:
         
         if x.done():
             futures.remove(x)
-    print(futures)
+    print("LENGTH "+str(len(futures)))
         
 
     isDone = set([x.done() for x in futures])
