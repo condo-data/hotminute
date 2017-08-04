@@ -8,6 +8,8 @@ import datetime
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 import zipfile
 from io import BytesIO
+from pympler.tracker import SummaryTracker
+tracker = SummaryTracker()
 executor = ProcessPoolExecutor(3)
 futures = []
 
@@ -108,20 +110,20 @@ def downloadpage(state_selected=None, site=None):
 def download(state_selected=None, filename=None):
     directory = app.static_folder + "/output/"
     if state_selected == 'ALL':
-        #memory_file = BytesIO()
-        memory_file = "all_states.csv"
+        memory_file = BytesIO()
+
         files = []
         
         for file in os.listdir(directory):
             if file.endswith(".csv"):
                 files.append(os.path.join(file))
   
-        with zipfile.ZipFile(directory + memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
+        with zipfile.ZipFile(memory_file, 'wb', zipfile.ZIP_DEFLATED) as zf:
             for individualFile in files:
                 zf.write(directory + individualFile, "/"+individualFile)
 
         #memory_file.seek(0)
-        return send_file(directory + memory_file, attachment_filename=filename, as_attachment=True)
+        return send_file(memory_file, attachment_filename=filename, as_attachment=True)
     else: 
         attachment_filename = filename
         
@@ -149,4 +151,5 @@ def isDone():
         #print(futures)
         del futures[:]  
         #print(futures)
+        tracker.print_diff()
         return jsonify({'state_selected': state_selected, 'result':url_for("downloadpage", state_selected=state_selected, site=site)})
