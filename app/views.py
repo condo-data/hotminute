@@ -144,7 +144,7 @@ def isDone():
     for x in futures:
         if x.done():
             futures.remove(x)
-    ]
+    
     if len(futures) < 1:
         del futures[:]  
         
