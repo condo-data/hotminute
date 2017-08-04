@@ -4,6 +4,7 @@ Flask==0.12.2
 Flask-WTF==0.14.2
 futures==3.1.1
 mechanize==0.3.5
+Pympler==0.5
 requests==2.9.1
 six==1.10.0
 WTForms==2.1
