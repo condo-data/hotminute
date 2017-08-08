@@ -3,10 +3,9 @@ import requests
 import time
 import re
 import mechanize
-import csv
-import os
-from io import BytesIO
-import zipfile
+#import os
+#from io import BytesIO
+#import zipfile
 from app import app
 from pympler.tracker import SummaryTracker
 tracker = SummaryTracker()
