@@ -14,23 +14,13 @@ $(function poll() {
             contentType: 'application/json;charset=UTF-8',
             success: function(response) {
                 window.location.href = response.result;
-                console.log(response);
-     
-               
-            
             },
             
             error: function(response){
-         
                 setTimeout(function () {
                     poll();
                 }, 30000)
-                
             },
-
-    
-        
-        
     });
 });
 </script>

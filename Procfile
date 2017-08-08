@@ -1,1 +1,1 @@
-web: python run.py
+web: newrelic-admin python run.py
