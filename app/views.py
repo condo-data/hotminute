@@ -3,7 +3,7 @@ from app import app
 from .forms import CondoForm, DownloadForm, VACondoForm
 import condo_data
 import os
-import time
+#import time
 import datetime
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 import zipfile
@@ -122,7 +122,7 @@ def download(state_selected=None, filename=None):
             if file.endswith(".csv"):
                 files.append(os.path.join(file))
   
-        with zipfile.ZipFile(memory_file, 'wb', zipfile.ZIP_DEFLATED) as zf:
+        with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
             for individualFile in files:
                 zf.write(directory + individualFile, "/"+individualFile)
         del files
