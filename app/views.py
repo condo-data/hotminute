@@ -21,7 +21,8 @@ def index():
     directory = app.static_folder + "/output/"
         
     for file in os.listdir(directory):
-        os.remove(file)
+        if file.endswith(".csv"):
+            os.remove(file)
     
     form = CondoForm()
     va_form = VACondoForm()
