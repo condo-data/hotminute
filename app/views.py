@@ -24,6 +24,7 @@ futures = []
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     global states
+    global reportType
     
     directory = app.static_folder + "/output/"
         
@@ -150,14 +151,14 @@ def download(state_selected=None, filename=None):
 def isDone():
     state_selected  = request.args.get('state_selected', None)
     site  = request.args.get('site', None)
-    reportType = request.args.get('reportType', None)
+    #reportType = request.args.get('reportType', None)
     
     for x in futures:
         if x.done():
             futures.remove(x)
             if state_selected == "ALL" and len(states) > 0:
                 print(states[0][0])
-                print(reportType)
+                #print(reportType)
                 futures.append(executor.submit(condo_data.scraperNoScraping, states[0][0], site, reportType))
                 states.remove(states[0])
     print(futures)
