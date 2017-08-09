@@ -13,6 +13,7 @@ import gc
 tracker = SummaryTracker()
 executor = ProcessPoolExecutor(3)
 futures = []
+states = []
 
 
 
@@ -45,7 +46,7 @@ def index():
             for state in states:
                 futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
                 
-            del states
+         
 
         else:
             futures.append(executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType))
@@ -62,10 +63,15 @@ def index():
             states = app.config["VA_STATES"]
             states = states[1:]
             
+            count = 0
             for state in states:
+                if count == 3:
+                    break
                 futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
+                states.remove(state)
+                count += 1
                 
-            del states
+            
 
         else:
             futures.append(executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType))
@@ -141,10 +147,17 @@ def download(state_selected=None, filename=None):
 def isDone():
     state_selected  = request.args.get('state_selected', None)
     site  = request.args.get('site', None)
+    reportType = request.args.get('reportType', None)
     
     for x in futures:
         if x.done():
             futures.remove(x)
+            if state_selected == "ALL" and len(states) > 0:
+                curstate = states[0][0]
+                futures.append(executor.submit(condo_data.scraperNoScraping, curstate, site, reportType))
+                states.remove(curstate)
+    
+    print(states)
     
     if len(futures) < 1:
         del futures[:]  
