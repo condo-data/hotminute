@@ -5,14 +5,18 @@ import condo_data
 import os
 #import time
 import datetime
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, as_completed
 import zipfile
 from io import BytesIO
 from pympler.tracker import SummaryTracker
-
+import gc
 tracker = SummaryTracker()
-executor = ProcessPoolExecutor(3)
+#executor = ProcessPoolExecutor(3)
 futures = []
+
+
+
+
 
 
 @app.route('/')
@@ -39,14 +43,14 @@ def index():
             states = states[1:]
             
             for state in states:
-                future = executor.submit(condo_data.scraperNoScraping, state[0], site, reportType)
-                futures.append(future)
+                with ProcessPoolExecutor(3) as executor:
+                    futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
                 
             del states
 
         else:
-            future = executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType)
-            futures.append(future)
+            with ProcessPoolExecutor(3) as executor:
+                futures.append(executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType))
 
             
         return redirect(url_for("load", state_selected=state_selected, site=site))    
@@ -70,7 +74,8 @@ def index():
             future = executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType)
             futures.append(future)
 
-        
+        collected = gc.collect()
+        print "Garbage collector: collected %d objects." % (collected)
         return redirect(url_for("load", state_selected=state_selected,site=site))    
  
     return render_template('index.html',form=form, va_form=va_form)
@@ -99,16 +104,10 @@ def downloadpage(state_selected=None, site=None):
     day = mydate.strftime('%d')
     year = mydate.year
     fn = str(month) +  "_" +  str(day)+ "_" + str(year) + "_" + state_selected + "_" + origin + "_Condo_Data" + fileType
- 
-    del origin
-    del mydate
-    del month
-    del year
+    for f in as_completed(futures):
+        if len(f.result()) > 1:
+            msgs.append(f.result()) 
 
-  
-    for x in futures:
-        if len(x.result()) > 1:
-            msgs.append(x.result()) 
 
 
     if form.validate_on_submit():
@@ -144,7 +143,6 @@ def download(state_selected=None, filename=None):
 
 @app.route('/done/', methods=['GET', "POST"])
 def isDone():
-    
     state_selected  = request.args.get('state_selected', None)
     site  = request.args.get('site', None)
     

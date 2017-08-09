@@ -27,32 +27,16 @@ def scrapeSinglePage(text, site):
     for row in rows:
         cols = row.findAll('td')
         temp = ",".join([re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]) + "\n"
-        cols = None
-        del cols
+
         if site == "hud":
             if "CondoName" not in temp:
                 count+=1
                 str += temp
-                temp = None
-                del temp
         else:
             if "," in temp and "Your search returned" not in temp and "Condo Name" not in temp:
                 count+=1
                 str += temp
-                temp = None
-                del temp
-    site = None
-    text = None
-    rows = None
-    soup = None
-    strainer = None
-    row = None
-    del site
-    del text
-    del row
-    del rows
-    del soup
-    del strainer
+
    # tracker.print_diff()
     return str , count
 
@@ -63,14 +47,7 @@ def isThereNext(text):
     soup = BeautifulSoup(text)
 
     if("[Next]" in soup.text):
-        soup = None
-        del soup
         return True
-        
-    text = None
-    soup = None
-    del soup
-    del text
     
     return False
 
@@ -125,9 +102,6 @@ def scraperNoScraping(state, site, reportType):
     for x in results:
         num_condos = int(x.split(' ', 1)[0])
     
-    x = None
-    del x
-    
     filename = state + "_Condo_Data.csv"
     #tracker.print_diff()
     count = 0
@@ -136,8 +110,6 @@ def scraperNoScraping(state, site, reportType):
         tup = scrapeSinglePage(text,site)
         ans += tup[0]  
         count += int(tup[1])
-        tup = None
-        del tup
         msg = ""
 
         while isThereNext(text):
@@ -153,9 +125,6 @@ def scraperNoScraping(state, site, reportType):
                 ans += tup[0]
                 count += int(tup[1])
                 
-                tup = None
-                del tup
-                
 
         if site == "hud":
             reportType = ""
@@ -164,16 +133,10 @@ def scraperNoScraping(state, site, reportType):
             msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
         elif count != num_condos*5 and reportType == "details":
             msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
-        
-        num_condos = None
-        count = None
-        del num_condos
-        del count
+
     else:
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
-    
-    text = None
-    del text
+
     #tracker.print_diff()
     d = time.time() - t0
     if site == "va":
@@ -186,34 +149,6 @@ def scraperNoScraping(state, site, reportType):
     #with open("static/output/" + filename, "wb") as file:
         file.write(ans)    
     #tracker.print_diff()
-    ans = None
-    del ans
-    
-    state = None
-    site = None
-    reportType = None
-    ans = None
-    url = None
-    br = None
-    response = None
-    regex = None
-    results = None
-    filename = None
-    t0 = None
-    d = None
-    
-    del state
-    del site
-    del reportType
-    del ans
-    del url
-    del br
-    del response
-    del regex
-    del results
-    del filename
-    del t0
-    del d
     #tracker.print_diff()
 
 
