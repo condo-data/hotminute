@@ -11,7 +11,7 @@ from io import BytesIO
 from pympler.tracker import SummaryTracker
 import gc
 tracker = SummaryTracker()
-#executor = ProcessPoolExecutor(3)
+executor = ProcessPoolExecutor(3)
 futures = []
 
 
@@ -43,14 +43,12 @@ def index():
             states = states[1:]
             
             for state in states:
-                with ProcessPoolExecutor(3) as executor:
-                    futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
+                futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
                 
             del states
 
         else:
-            with ProcessPoolExecutor(3) as executor:
-                futures.append(executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType))
+            futures.append(executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType))
 
             
         return redirect(url_for("load", state_selected=state_selected, site=site))    
@@ -65,14 +63,12 @@ def index():
             states = states[1:]
             
             for state in states:
-                with ProcessPoolExecutor(3) as executor:
-                    futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
+                futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
                 
             del states
 
         else:
-            with ProcessPoolExecutor(3) as executor:
-                futures.append(executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType))
+            futures.append(executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType))
 
         collected = gc.collect()
         print "Garbage collector: collected %d objects." % (collected)
