@@ -3,12 +3,13 @@ import requests
 import time
 import re
 import mechanize
-#import os
-#from io import BytesIO
-#import zipfile
+import types
 from app import app
-from pympler.tracker import SummaryTracker
-tracker = SummaryTracker()
+#from pympler.tracker import SummaryTracker
+#from pympler import muppy
+#import gc
+
+
 
 def scrapeSinglePage(text, site):
     """Take all of the data from the html table and format it into 
@@ -18,26 +19,37 @@ def scrapeSinglePage(text, site):
     else:
         strainer = SoupStrainer('table', {"id":"searchForm:mainpanel", "cellpadding":"10", "cellspacing":"0", "class":"inputpanel"})
     soup = BeautifulSoup(text, parseOnlyThese=strainer)
-    #tracker.print_diff()
+
     str = ""
     count = 0 
     rows = soup.table.findAll('tr')
-    #tracker.print_diff()
+
     for row in rows:
         cols = row.findAll('td')
         temp = ",".join([re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]) + "\n"
+        cols = None
         del cols
         if site == "hud":
             if "CondoName" not in temp:
                 count+=1
                 str += temp
+                temp = None
                 del temp
         else:
-            #print(temp)
             if "," in temp and "Your search returned" not in temp and "Condo Name" not in temp:
                 count+=1
                 str += temp
+                temp = None
                 del temp
+    site = None
+    text = None
+    rows = None
+    soup = None
+    strainer = None
+    row = None
+    del site
+    del text
+    del row
     del rows
     del soup
     del strainer
@@ -47,12 +59,18 @@ def scrapeSinglePage(text, site):
 
 def isThereNext(text):
     """Check there is a Next button on the page."""
+    
     soup = BeautifulSoup(text)
 
     if("[Next]" in soup.text):
+        soup = None
         del soup
         return True
+        
+    text = None
+    soup = None
     del soup
+    del text
     
     return False
 
@@ -65,7 +83,14 @@ def getNext(text,br,num_condos):
     return text
 
 def scraperNoScraping(state, site, reportType):
-    #tracker.print_diff()
+    
+    #collected = gc.collect()
+    #print "Garbage collector: collected %d objects." % (collected)
+    #tracker = SummaryTracker()
+    #all_objects = muppy.get_objects()
+    #print(len(all_objects))
+    
+    
     if site == "va":
         url = "https://vip.vba.va.gov/portal/VBAH/VBAHome/condopudsearch?paf_portalId=default&paf_communityId=100002&paf_pageId=500002&paf_dm=full&paf_gear_id=800001&paf_gm=content&paf_ps=_rp_800001_condoName%3D1_%26_rp_800001_condoId%3D1_%26_ps_800001%3Dmaximized%26_pid%3D800001%26_rp_800001_county%3D1_%26_rp_800001_stateCode%3D1_" + state + "%26_pm_800001%3Dview%26_md_800001%3Dview%26_rp_800001_cpbaction%3D1_performSearchPud%26_st_800001%3Dmaximized%26_rp_800001_reportType%3D1_" + reportType + "%26_rp_800001_regionalOffice%3D1_%26_rp_800001_city%3D1_&_requestid=455594"
         if reportType == "details":
@@ -91,11 +116,7 @@ def scraperNoScraping(state, site, reportType):
         br.form['fstate'] = [state,]
         response = br.submit()
         
-   #tracker.print_diff()
-    
     text = response.read()
-    
-    #tracker.print_diff()
     
     regex = re.compile(r'[0-9]+ records')
     results = regex.findall(text)
@@ -103,6 +124,9 @@ def scraperNoScraping(state, site, reportType):
     num_condos = ""
     for x in results:
         num_condos = int(x.split(' ', 1)[0])
+    
+    x = None
+    del x
     
     filename = state + "_Condo_Data.csv"
     #tracker.print_diff()
@@ -112,6 +136,7 @@ def scraperNoScraping(state, site, reportType):
         tup = scrapeSinglePage(text,site)
         ans += tup[0]  
         count += int(tup[1])
+        tup = None
         del tup
         msg = ""
 
@@ -127,6 +152,8 @@ def scraperNoScraping(state, site, reportType):
                 tup = scrapeSinglePage(text,site)
                 ans += tup[0]
                 count += int(tup[1])
+                
+                tup = None
                 del tup
                 
 
@@ -134,14 +161,18 @@ def scraperNoScraping(state, site, reportType):
             reportType = ""
  
         if count != num_condos and reportType != "details":
-
             msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
         elif count != num_condos*5 and reportType == "details":
             msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
+        
+        num_condos = None
+        count = None
         del num_condos
         del count
     else:
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
+    
+    text = None
     del text
     #tracker.print_diff()
     d = time.time() - t0
@@ -155,8 +186,45 @@ def scraperNoScraping(state, site, reportType):
     #with open("static/output/" + filename, "wb") as file:
         file.write(ans)    
     #tracker.print_diff()
+    ans = None
     del ans
+    
+    state = None
+    site = None
+    reportType = None
+    ans = None
+    url = None
+    br = None
+    response = None
+    regex = None
+    results = None
+    filename = None
+    t0 = None
+    d = None
+    
+    del state
+    del site
+    del reportType
+    del ans
+    del url
+    del br
+    del response
+    del regex
+    del results
+    del filename
+    del t0
+    del d
+    #tracker.print_diff()
+
+
+    #all_objects = muppy.get_objects()
+    #print(len(all_objects))
+    #collected = gc.collect()
+    #print "Garbage collector: collected %d objects." % (collected)
     return msg
 
-#scraperNoScraping('AZ', "va", "summary")
+if __name__ == "__main__":
+    
+    scraperNoScraping('AZ', "va", "summary")
+   
 #('AK', "va")
