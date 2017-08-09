@@ -22,7 +22,7 @@ def index():
         
     for file in os.listdir(directory):
         if file.endswith(".csv"):
-            os.remove(file)
+            os.remove(directory + file)
     
     form = CondoForm()
     va_form = VACondoForm()
