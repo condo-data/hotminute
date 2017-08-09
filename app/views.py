@@ -46,8 +46,13 @@ def index():
             states = app.config["STATES"]
             states = states[1:]
             
+            count = 0
             for state in states:
-                futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
+                if count == 5:
+                    break
+                    futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
+                    states.remove(state)
+                    count += 1
                 
          
 
@@ -81,8 +86,7 @@ def index():
         else:
             futures.append(executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType))
 
-        collected = gc.collect()
-        print "Garbage collector: collected %d objects." % (collected)
+
         return redirect(url_for("load", state_selected=state_selected,site=site))    
  
     return render_template('index.html',form=form, va_form=va_form)
@@ -164,12 +168,14 @@ def isDone():
                 states.remove(states[0])
     #print(futures)
     #print(states)
-    print(gc.garbage)
-    collected = gc.collect()
-    print "Garbage collector: collected %d objects." % (collected)
+    #print(gc.garbage)
+
     
     
     if len(futures) < 1:
         del futures[:]  
-        
+        print(gc.get_objects())
+        collected = gc.collect()
+        print "Garbage collector: collected %d objects." % (collected)
+        print(gc.get_objects())
         return jsonify({'state_selected': state_selected, 'result':url_for("downloadpage", state_selected=state_selected, site=site)})
