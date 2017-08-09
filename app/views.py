@@ -20,6 +20,7 @@ futures = []
 
 
 
+
 @app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -39,7 +40,7 @@ def index():
     if form.submit1.data and form.validate_on_submit():
         state_selected = request.form['state']
         reportType = ""
-        print(reportType)
+        #print(reportType)
         site = "hud"
         if state_selected == "ALL":
             states = app.config["STATES"]
@@ -64,7 +65,7 @@ def index():
         if state_selected == "ALL":
             states = app.config["VA_STATES"]
             states = states[1:]
-            print(states)
+            #print(states)
             
             count = 0
             for state in states:
@@ -73,7 +74,7 @@ def index():
                 futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
                 states.remove(state)
                 count += 1
-            print(states)
+            #print(states)
                 
             
 
@@ -157,12 +158,16 @@ def isDone():
         if x.done():
             futures.remove(x)
             if state_selected == "ALL" and len(states) > 0:
-                print(states[0][0])
+                #print(states[0][0])
                 #print(reportType)
                 futures.append(executor.submit(condo_data.scraperNoScraping, states[0][0], site, reportType))
                 states.remove(states[0])
-    print(futures)
-    print(states)
+    #print(futures)
+    #print(states)
+    
+    collected = gc.collect()
+    print "Garbage collector: collected %d objects." % (collected)
+    
     
     if len(futures) < 1:
         del futures[:]  
