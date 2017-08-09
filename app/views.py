@@ -164,7 +164,7 @@ def isDone():
                 states.remove(states[0])
     #print(futures)
     #print(states)
-    
+    print(gc.garbage)
     collected = gc.collect()
     print "Garbage collector: collected %d objects." % (collected)
     
