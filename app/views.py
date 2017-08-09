@@ -13,7 +13,7 @@ import gc
 tracker = SummaryTracker()
 executor = ProcessPoolExecutor(3)
 futures = []
-states = []
+#states = []
 
 
 
@@ -23,6 +23,7 @@ states = []
 @app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
+    global states
     
     directory = app.static_folder + "/output/"
         
@@ -62,6 +63,7 @@ def index():
         if state_selected == "ALL":
             states = app.config["VA_STATES"]
             states = states[1:]
+            print(states)
             
             count = 0
             for state in states:
@@ -70,6 +72,7 @@ def index():
                 futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
                 states.remove(state)
                 count += 1
+            print(states)
                 
             
 
