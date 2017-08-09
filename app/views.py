@@ -65,14 +65,14 @@ def index():
             states = states[1:]
             
             for state in states:
-                future = executor.submit(condo_data.scraperNoScraping, state[0], site, reportType)
-                futures.append(future)
+                with ProcessPoolExecutor(3) as executor:
+                    futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
                 
             del states
 
         else:
-            future = executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType)
-            futures.append(future)
+            with ProcessPoolExecutor(3) as executor:
+                futures.append(executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType))
 
         collected = gc.collect()
         print "Garbage collector: collected %d objects." % (collected)

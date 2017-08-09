@@ -158,8 +158,8 @@ def scraperNoScraping(state, site, reportType):
     #print "Garbage collector: collected %d objects." % (collected)
     return msg
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     
-    scraperNoScraping('AZ', "va", "summary")
+#    scraperNoScraping('AZ', "va", "summary")
    
 #('AK', "va")
