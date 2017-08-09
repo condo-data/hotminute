@@ -175,7 +175,7 @@ def isDone():
     if len(futures) < 1:
         del futures[:]  
         #giprint(gc.get_objects())
-        #collected = gc.collect()
+        collected = gc.collect()
         print "Garbage collector: collected %d objects." % (collected)
-        print(gc.get_objects())
+        #print(gc.get_objects())
         return jsonify({'state_selected': state_selected, 'result':url_for("downloadpage", state_selected=state_selected, site=site)})
