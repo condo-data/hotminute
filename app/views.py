@@ -13,6 +13,7 @@ import gc
 tracker = SummaryTracker()
 executor = ProcessPoolExecutor(3)
 futures = []
+msgs = []
 #states = []
 
 
@@ -154,9 +155,7 @@ def download(state_selected=None, filename=None):
 
 @app.route('/done/', methods=['GET', "POST"])
 def isDone():
-    global msgs
-    
-    msgs = []
+   
     
     state_selected  = request.args.get('state_selected', None)
     site  = request.args.get('site', None)
