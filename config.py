@@ -1,3 +1,4 @@
+#this is our config file
 CSRF_ENABLED = True
 SECRET_KEY = 'thi$ismy$ecretkey!'
 
