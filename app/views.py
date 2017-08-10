@@ -27,6 +27,7 @@ def index():
     global states
     global reportType
     
+    
     directory = app.static_folder + "/output/"
         
     for file in os.listdir(directory):
@@ -37,6 +38,7 @@ def index():
     va_form = VACondoForm()
     
     futures[:] = []
+    msgs[:] = [] 
     if form.submit1.data and form.validate_on_submit():
         state_selected = request.form['state']
         reportType = ""
@@ -97,10 +99,10 @@ def load(state_selected=None,site=None):
         
 @app.route('/downloadpage/<state_selected>/<site>', methods=['GET', 'POST'])
 def downloadpage(state_selected=None, site=None):
-    
+    #global msgs
     form = DownloadForm()
     fn = ""
-    msgs = []
+    #msgs = []
     fileType = ""
     origin = site.upper()
     
@@ -115,9 +117,7 @@ def downloadpage(state_selected=None, site=None):
     day = mydate.strftime('%d')
     year = mydate.year
     fn = str(month) +  "_" +  str(day)+ "_" + str(year) + "_" + state_selected + "_" + origin + "_Condo_Data" + fileType
-    for f in as_completed(futures):
-        if len(f.result()) > 1:
-            msgs.append(f.result()) 
+
 
 
 
@@ -154,12 +154,17 @@ def download(state_selected=None, filename=None):
 
 @app.route('/done/', methods=['GET', "POST"])
 def isDone():
+    global msgs
+    
+    msgs = []
+    
     state_selected  = request.args.get('state_selected', None)
     site  = request.args.get('site', None)
     #reportType = request.args.get('reportType', None)
     
     for x in futures:
         if x.done():
+            msgs.append(x.result()) 
             futures.remove(x)
             if state_selected == "ALL" and len(states) > 0:
                 #print(states[0][0])
@@ -175,8 +180,8 @@ def isDone():
     if len(futures) < 1:
         del futures[:]  
         #giprint(gc.get_objects())
-        collected = gc.collect()
-        print "Garbage collector: collected %d objects." % (collected)
+        #collected = gc.collect()
+        #print "Garbage collector: collected %d objects." % (collected)
         #print(gc.get_objects())
         return jsonify({'state_selected': state_selected, 'result':url_for("downloadpage", state_selected=state_selected, site=site)})
     
