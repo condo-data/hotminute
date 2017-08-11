@@ -45,9 +45,11 @@ def scrapeSinglePage(text, site, reportType):
             if site == "hud":
                 if "CondoName" not in temp:
                     str += temp
+                    count +=1 
             else:
                 if "," in temp and "Your search returned" not in temp:
                     count+=1
+                    #print(count)
                     str += temp
     #print(str)
     return str , count
@@ -78,7 +80,7 @@ def scraperNoScraping(state, site, reportType):
         if reportType == "details":
             ans = ""
         else:
-            ans = "Condo Name,ID,Record Type\n"
+            ans = ""
     else:
         url = "https://entp.hud.gov/idapp/html/condlook.cfm"
         ans="CondoName,Condo ID /Submission,Address,County,ApprovalMethod,Compositionof Project,Comments,DocumentStatus,ManufacturedHousing,FHAConcentration,Status,StatusDate,ExpirationDate\n"
@@ -178,9 +180,7 @@ def scraperNoScraping(state, site, reportType):
 
     if count != num_condos:
         msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
-        #print(msg)
-    elif count != num_condos and reportType == "details":
-        msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
+
     
     
     #with open( os.path.join(path, name) , 'r') as mycsvfile:
@@ -200,4 +200,4 @@ def scraperNoScraping(state, site, reportType):
 #if __name__ == "__main__":
     
    
-#    print(scraperNoScraping("GU", "va", "details"))
+#    print(scraperNoScraping("GU", "hud", ""))
