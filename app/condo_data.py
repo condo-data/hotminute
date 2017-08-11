@@ -5,9 +5,9 @@ import re
 import csv
 import mechanize
 import types
-from app import app
+#from app import app
 
-def scrapeSinglePage(text, site, reportType):
+def scrapeSinglePage(text, site):
     """Take all of the data from the html table and format it into 
     a list of lists to be easily processed later"""
     if site == "hud":
@@ -19,40 +19,75 @@ def scrapeSinglePage(text, site, reportType):
     str = ""
     count = 0 
     rows = soup.table.findAll('tr')
-    if site == 'va' and reportType == 'details':
-        for row in rows:
-            
-            try:
-                cols = row.tr.findAll('td')
-                #print(cols)
-            except:
-                continue
-            
-            if len(cols) > 2:
 
-                temp = ",".join([re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]) + ","
-               # print(len(temp))
+    for row in rows:
+        cols = row.findAll('td')
+        temp = ",".join([re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]) + "\n"
+
+        if site == "hud":
+            if "CondoName" not in temp:
+                str += temp
+                count +=1 
+        else:
+            if "," in temp and "Your search returned" not in temp:
+                count+=1
                 #print(count)
                 str += temp
-        
-            #print(row)
-    else:
-
-        for row in rows:
-            cols = row.findAll('td')
-            temp = ",".join([re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]) + "\n"
-
-            if site == "hud":
-                if "CondoName" not in temp:
-                    str += temp
-                    count +=1 
-            else:
-                if "," in temp and "Your search returned" not in temp:
-                    count+=1
-                    #print(count)
-                    str += temp
     #print(str)
     return str , count
+    
+def scrapeSinglePageDetails(text, site):
+    """Take all of the data from the html table and format it into 
+    a list of lists to be easily processed later"""
+    if site == "hud":
+        strainer = SoupStrainer('table', {'width':"100%", 'border':"1", 'cellpadding':"2", 'cellspacing':"1"})
+    else:
+        strainer = SoupStrainer('table', {"id":"searchForm:mainpanel", "cellpadding":"10", "cellspacing":"0", "class":"inputpanel"})
+    soup = BeautifulSoup(text, parseOnlyThese=strainer)
+
+    temp = ""
+   
+    rows = soup.table.findAll('tr')
+
+    for row in rows:
+            
+        try:
+            cols = row.tr.findAll('td')
+
+        except:
+            continue
+            
+        if len(cols) > 2:
+
+            temp = [re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]
+
+    i = 0
+    ansl =[]
+    ansl.append(["Condo Name (ID)","Address,Status","Last Update","Request Received Date","Review Completion Date"])
+ 
+    temp = temp[6:]
+    t =[]
+    for l in temp:
+        if len(l) > 100:
+            continue
+     
+        if i == 12:
+            ansl.append(t)
+            i = 0
+        if i == 0:
+            t = []
+
+        if i % 2 != 0:
+            #print(i)
+            #print(l)
+            t.append(l)
+        i+=1
+    count = len(ansl)
+    #print(count)
+
+
+    return ansl , count
+
 
 
 def isThereNext(text):
@@ -107,7 +142,7 @@ def scraperNoScraping(state, site, reportType):
     t0 = time.time()
     
     if "No records match all the selection criteria" not in text:
-        tup = scrapeSinglePage(text,site,reportType)
+        tup = scrapeSinglePage(text,site)
         ans += tup[0]  
         count += int(tup[1])
         msg = ""
@@ -121,7 +156,7 @@ def scraperNoScraping(state, site, reportType):
                 break
             
             if len(text)> 0:
-                tup = scrapeSinglePage(text,site, reportType)
+                tup = scrapeSinglePage(text,site)
                 ans += tup[0]
                 count += int(tup[1])
                 
@@ -137,47 +172,19 @@ def scraperNoScraping(state, site, reportType):
          ans = ans.replace("&nbsp", "")
     print(state +" duration: %.2f s." % d)
 
-
+    ansl = []
     if site == 'va' and reportType == 'details':
-        count = 0
-    #print(ans)
-        mylist = ans.split(",")
-        i = 0
-        ansl =[]
-        temp = []
-    
-        ansl.append(["Condo Name (ID)","Address,Status","Last Update","Request Received Date","Review Completion Date"])
-        #print(mylist)
-        mylist = mylist[6:]
-        
-        for l in mylist:
-            if len(l) > 100:
-                continue
-            #print(l)
-            if i == 12:
-                #print(temp)
-                ansl.append(temp)
-                i = 0
-            if i == 0:
-                temp = []
-                #print(temp)
+        tup = scrapeSinglePageDetails(text,site)
+        ansl = tup[0]
+        count = int(tup[1])
+        #singleScrapePageDetails(text, site)
 
-        
-            if i % 2 != 0:
-            #print(i)
-            #print(l)
-                temp.append(l)
-            i+=1
-        count = len(ansl)-1
-    #for l in ansl:
-    #    print(l)
-    #print(len(ansl))
-    #print(mylist)
     
-    
+    print(count)
+    print(num_condos)
     if site == "hud":
         reportType = ""
-    if site == 'va':
+    if site == 'va' and reportType != "details":
         count -=1
     if count != num_condos:
         msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
@@ -187,8 +194,8 @@ def scraperNoScraping(state, site, reportType):
     #with open( os.path.join(path, name) , 'r') as mycsvfile:
 #writer = csv.writer(open(newFilename, 'w'))
 
-    with open(app.static_folder+ "/output/" + filename, "wb") as file:
-    #with open("static/output/" + filename, "wb") as file:
+    #with open(app.static_folder+ "/output/" + filename, "wb") as file:
+    with open("static/output/" + filename, "wb") as file:
         if site == 'va' and reportType == 'details':
             writer = csv.writer(file)
             writer.writerows(ansl)
@@ -198,7 +205,7 @@ def scraperNoScraping(state, site, reportType):
     return msg
 
 
-#if __name__ == "__main__":
+if __name__ == "__main__":
     
    
-#    print(scraperNoScraping("GU", "hud", ""))
+    print(scraperNoScraping("GU", "hud", ""))
