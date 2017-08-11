@@ -1,44 +1,37 @@
-
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="container">
-    
-   <div class="well" >
-       <form class="form-inline" action="{{ url_for('index') }}" method="POST" name="condoform">
-        {{ form.hidden_tag() }}
-        
-     
-           <h4>HUD.gov</h4>
+
+    <div class="well">
+        <form class="form-inline" action="{{ url_for('index') }}" method="POST" name="condoform">
+            {{ form.hidden_tag() }}
+
+
+            <h4>HUD.gov</h4>
             <p>Please select a state: {{ form.state }} </p>
-           
-             {{ form.submit1 }} <br>
-      </form>
-</div>
 
-   <div class="well" >
-       <form class="form-inline" action="{{ url_for('index') }}" method="POST" name="vacondoform">
-        {{ va_form.hidden_tag() }}
-        
-     
-           <h4>VA.gov</h4>
-            <p>Please select a state: {{ va_form.state }} </p>
-            <p>Please select report type:  
-            {% for subfield in va_form.rt %}
-<tr>
-    <td>{{ subfield.label }} : {{ subfield }}</td>
-
-</tr>
-{% endfor %}
-
-</p>
-           
-             {{ va_form.vasubmit }} <br>
-      </form>
-</div>
-     
-    
+            {{ form.submit1 }} <br>
+        </form>
     </div>
 
-    
+    <div class="well">
+        <form class="form-inline" action="{{ url_for('index') }}" method="POST" name="vacondoform">
+            {{ va_form.hidden_tag() }}
+
+
+            <h4>VA.gov</h4>
+            <p>Please select a state: {{ va_form.state }} </p>
+            <p>Please select report type: {% for subfield in va_form.rt %}
+                <tr>
+                    <td>{{ subfield.label }} : {{ subfield }}</td>
+
+                </tr>
+                {% endfor %}
+
+            </p>
+
+            {{ va_form.vasubmit }} <br>
+        </form>
+    </div>
+
+</div>
 {% endblock %}

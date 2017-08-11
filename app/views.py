@@ -14,12 +14,6 @@ tracker = SummaryTracker()
 executor = ProcessPoolExecutor(3)
 futures = []
 msgs = []
-#states = []
-
-
-
-
-
 
 
 @app.route('/')
@@ -27,7 +21,6 @@ msgs = []
 def index():
     global states
     global reportType
-    
     
     directory = app.static_folder + "/output/"
         
@@ -43,8 +36,8 @@ def index():
     if form.submit1.data and form.validate_on_submit():
         state_selected = request.form['state']
         reportType = ""
-        #print(reportType)
         site = "hud"
+        
         if state_selected == "ALL":
             states = app.config["STATES"]
             states = states[1:]
@@ -57,8 +50,6 @@ def index():
                 states.remove(state)
                 count += 1
                 
-         
-
         else:
             futures.append(executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType))
 
@@ -73,7 +64,6 @@ def index():
         if state_selected == "ALL":
             states = app.config["VA_STATES"]
             states = states[1:]
-            #print(states)
             
             count = 0
             for state in states:
@@ -82,10 +72,7 @@ def index():
                 futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
                 states.remove(state)
                 count += 1
-            #print(states)
                 
-            
-
         else:
             futures.append(executor.submit(condo_data.scraperNoScraping, state_selected, site, reportType))
 
@@ -118,9 +105,6 @@ def downloadpage(state_selected=None, site=None):
     day = mydate.strftime('%d')
     year = mydate.year
     fn = str(month) +  "_" +  str(day)+ "_" + str(year) + "_" + state_selected + "_" + origin + "_Condo_Data" + fileType
-
-
-
 
     if form.validate_on_submit():
         return redirect(url_for("download", state_selected=state_selected, filename=fn)) 
@@ -156,32 +140,22 @@ def download(state_selected=None, filename=None):
 @app.route('/done/', methods=['GET', "POST"])
 def isDone():
    
-    
     state_selected  = request.args.get('state_selected', None)
     site  = request.args.get('site', None)
-    #reportType = request.args.get('reportType', None)
+
     
     for x in futures:
         if x.done():
             msgs.append(x.result()) 
             futures.remove(x)
             if state_selected == "ALL" and len(states) > 0:
-                #print(states[0][0])
-                #print(reportType)
                 futures.append(executor.submit(condo_data.scraperNoScraping, states[0][0], site, reportType))
                 states.remove(states[0])
-    #print(futures)
-    #print(states)
-    #print(gc.garbage)
 
-    
-    
     if len(futures) < 1:
         del futures[:]  
-        #giprint(gc.get_objects())
         #collected = gc.collect()
         #print "Garbage collector: collected %d objects." % (collected)
-        #print(gc.get_objects())
         return jsonify({'state_selected': state_selected, 'result':url_for("downloadpage", state_selected=state_selected, site=site)})
     
     response = jsonify({'error':'Still loading'})

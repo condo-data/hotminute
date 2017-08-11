@@ -1,35 +1,23 @@
-{% extends "base.html" %}
-{% block content %}
-{% if msgs %}
- {% if  msgs|length > 0  %}
-            <div class="alert alert-warning" style="margin-right:50%;">
-            
-            {% for msg in msgs %}
-            <strong>Warning!</strong>
-                {% if  msg|length > -1  %}
-                   <p> {{ msg }}</p>
-                {% endif %}
-            {% endfor%}
+{% extends "base.html" %} {% block content %}
 
-    </div>
-    {% endif %}    
-    {% endif %}
+ {% if msgs|length > 0 and msgs is defined%}
+ 
+   <div class="alert alert-warning" style="margin-right:50%;">
+    <strong>Warning!</strong> {% for msg in msgs %} {% if msg|length > 0 and msgs != "" %}
+    <p> {{ msg }}</p>
+    
+ {% endif %} {% endfor%}
 
+</div>
 
-       <form action="{{ url_for('downloadpage', state_selected=state_selected,site=site ) }}" method="POST" name="downloadform">
-            
-            {{ form.hidden_tag() }}
-             
-             <p> Would you like to download this file: {{ filename }} ? </p>   
-             
-             
-             
-            {{form.submit}}
-            
-            
-        </form>
+{% endif %} {% endif %}
 
-            
-       
+<form action="{{ url_for('downloadpage', state_selected=state_selected,site=site ) }}" method="POST" name="downloadform">
+
+ {{ form.hidden_tag() }}
+ <p> Would you like to download this file: {{ filename }} ? </p>
+ {{form.submit}}
+ 
+</form>
 
 {% endblock %}
