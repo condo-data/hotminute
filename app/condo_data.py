@@ -5,7 +5,7 @@ import re
 import csv
 import mechanize
 import types
-from app import app
+#from app import app
 
 def scrapeSinglePage(text, site):
     """Take all of the data from the html table and format it into 
@@ -89,7 +89,51 @@ def scrapeSinglePageDetails(text, site):
 
     return ansl , count
 
+def scrapeSinglePageDetails2(text, site):
+    """Take all of the data from the html table and format it into 
+    a list of lists to be easily processed later"""
+    if site == "hud":
+        strainer = SoupStrainer('table', {'width':"100%", 'border':"1", 'cellpadding':"2", 'cellspacing':"1"})
+    else:
+        strainer = SoupStrainer('table', {"id":"searchForm:mainpanel", "cellpadding":"10", "cellspacing":"0", "class":"inputpanel"})
+    soup = BeautifulSoup(text, parseOnlyThese=strainer)
 
+    ans = ""
+   
+    rows = soup.table.findAll('tr')
+    count = 0
+    for row in rows:
+            
+        try:
+            cols = row.tr.findAll('td')
+            #print(cols)
+        except:
+            continue
+        
+            
+        if len(cols) > 2:
+            #ans = ans
+            temp = [re.sub('\s{2,}', ' ',x.text).replace(",","").replace("&nbsp", "") for x in cols]
+            temp = temp[6:]
+            #count = len(temp)
+            
+            for i in range(0,len(temp)-1):
+                
+                #",Last Update,Request Received Date,Review Completion Date"
+                if "Condo Name (ID)" in temp[i] or "Status" in temp[i] or "Address" in temp[i] or "Last Update" in temp[i] or "Last Update" in temp[i] or "Request Received Date"in temp[i]:
+                    if "Condo Name" in str(temp[i+1]):
+                        continue
+                    ans += str(temp[i+1]) + ','
+                elif "Review Completion Date" in temp[i]:
+                    ans += str(temp[i+1]) + '\n'
+                    count +=1
+            #print(ans)
+                    
+                    
+            #temp = [re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]
+
+
+    return ans , count
 
 def isThereNext(text):
     """Check there is a Next button on the page."""
@@ -175,8 +219,8 @@ def scraperNoScraping(state, site, reportType):
 
     ansl = []
     if site == 'va' and reportType == 'details':
-        tup = scrapeSinglePageDetails(text,site)
-        ansl = tup[0]
+        tup = scrapeSinglePageDetails2(text,site)
+        ans = tup[0]
         count = int(tup[1])
         #singleScrapePageDetails(text, site)
 
@@ -186,8 +230,10 @@ def scraperNoScraping(state, site, reportType):
     #print(num_condos)
     if site == "hud":
         reportType = ""
-    if site == 'va' and reportType != "details":
-        count -=1
+    #if site == 'va' and reportType != "details":
+    #    count -=1
+    #print(count)
+    #print(num_condos)
     if count != num_condos:
         msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
 
@@ -196,16 +242,16 @@ def scraperNoScraping(state, site, reportType):
     #with open( os.path.join(path, name) , 'r') as mycsvfile:
 #writer = csv.writer(open(newFilename, 'w'))
 
-    with open(app.static_folder+ "/output/" + filename, "wb") as file:
-    #with open("static/output/" + filename, "wb") as file:
-        if site == 'va' and reportType == 'details':
-            writer = csv.writer(file)
-            writer.writerows(ansl)
-        else:
+    #with open(app.static_folder+ "/output/" + filename, "wb") as file:
+    with open("static/output/" + filename, "wb") as file:
+        #if site == 'va' and reportType == 'details':
+        #    writer = csv.writer(file)
+        #    writer.writerows(ansl)
+        #else:
             file.write(ans)    
 
     return msg
 
 
-#if __name__ == "__main__":
- #   print(scraperNoScraping("GU", "hud", ""))
+if __name__ == "__main__":
+    print(scraperNoScraping("GU", "va", "details"))
