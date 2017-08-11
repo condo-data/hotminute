@@ -34,6 +34,7 @@ def scrapeSinglePage(text, site):
                 #print(count)
                 str += temp
     #print(str)
+    soup.decompose()
     return str , count
     
 def scrapeSinglePageDetails(text, site):
@@ -132,7 +133,7 @@ def scrapeSinglePageDetails2(text, site):
                     
             #temp = [re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]
 
-
+    soup.decompose()
     return ans , count
 
 def isThereNext(text):
@@ -141,7 +142,7 @@ def isThereNext(text):
 
     if("[Next]" in soup.text):
         return True
-    
+    soup.decompose()
     return False
 
 def getNext(text,br,num_condos):
