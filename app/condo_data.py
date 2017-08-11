@@ -5,7 +5,7 @@ import re
 import csv
 import mechanize
 import types
-#from app import app
+from app import app
 
 def scrapeSinglePage(text, site):
     """Take all of the data from the html table and format it into 
@@ -242,8 +242,8 @@ def scraperNoScraping(state, site, reportType):
     #with open( os.path.join(path, name) , 'r') as mycsvfile:
 #writer = csv.writer(open(newFilename, 'w'))
 
-    #with open(app.static_folder+ "/output/" + filename, "wb") as file:
-    with open("static/output/" + filename, "wb") as file:
+    with open(app.static_folder+ "/output/" + filename, "wb") as file:
+    #with open("static/output/" + filename, "wb") as file:
         #if site == 'va' and reportType == 'details':
         #    writer = csv.writer(file)
         #    writer.writerows(ansl)
@@ -253,5 +253,5 @@ def scraperNoScraping(state, site, reportType):
     return msg
 
 
-if __name__ == "__main__":
-    print(scraperNoScraping("GU", "va", "details"))
+#if __name__ == "__main__":
+#    print(scraperNoScraping("GU", "va", "details"))
