@@ -149,7 +149,8 @@ def getNext(text,br,num_condos):
     br.select_form(nr=2)
     response = br.submit(type='image')
     text = response.read()
-
+    response.close()
+    br.clear_history()
     return text
 
 def scraperNoScraping(state, site, reportType):
@@ -174,6 +175,8 @@ def scraperNoScraping(state, site, reportType):
         response = br.submit()
         
     text = response.read()
+    response.close()
+    br.clear_history()
     
     regex = re.compile(r'[0-9]+ records')
     results = regex.findall(text)
@@ -230,8 +233,8 @@ def scraperNoScraping(state, site, reportType):
     #print(num_condos)
     if site == "hud":
         reportType = ""
-    #if site == 'va' and reportType != "details":
-    #    count -=1
+    if site == 'va' and reportType != "details":
+        count -=1
     #print(count)
     #print(num_condos)
     if count != num_condos:
@@ -254,4 +257,6 @@ def scraperNoScraping(state, site, reportType):
 
 
 #if __name__ == "__main__":
-#    print(scraperNoScraping("GU", "va", "details"))
+#    print(scraperNoScraping("DC", "hud", ""))
+    #print(scraperNoScraping("GU", "va", "details"))
+    #print(scraperNoScraping("GU", "va", "summary"))
