@@ -74,6 +74,7 @@ def scrapeSinglePageDetails(text, site):
         if i == 12:
             ansl.append(t)
             i = 0
+            
         if i == 0:
             t = []
 
@@ -82,9 +83,9 @@ def scrapeSinglePageDetails(text, site):
             #print(l)
             t.append(l)
         i+=1
+        
     count = len(ansl)
     #print(count)
-
 
     return ansl , count
 
@@ -146,19 +147,19 @@ def scraperNoScraping(state, site, reportType):
         ans += tup[0]  
         count += int(tup[1])
         msg = ""
+        if site == "hud":
+            while isThereNext(text):
+                try:
+                    text = getNext(text,br,num_condos) 
 
-        while isThereNext(text):
-            try:
-                text = getNext(text,br,num_condos) 
-
-            except:
-                msg="Site error occured in reading data for " + state + ", not all data was retrieved."
-                break
+                except:
+                    msg="Site error occured in reading data for " + state + ", not all data was retrieved."
+                    break
             
-            if len(text)> 0:
-                tup = scrapeSinglePage(text,site)
-                ans += tup[0]
-                count += int(tup[1])
+                if len(text)> 0:
+                    tup = scrapeSinglePage(text,site)
+                    ans += tup[0]
+                    count += int(tup[1])
                 
 
 
