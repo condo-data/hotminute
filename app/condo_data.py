@@ -102,38 +102,33 @@ def scrapeSinglePageDetails2(text, site):
     ans = ""
    
     rows = soup.table.findAll('tr')
+    
+    #print(rows[2])
     count = 0
-    for row in rows:
-            
-        try:
-            cols = row.tr.findAll('td')
-            #print(cols)
-        except:
-            continue
-        
-            
-        if len(cols) > 2:
+    cols = rows[2].findAll('td')
+    #print(cols)
             #ans = ans
-            temp = [re.sub('\s{2,}', ' ',x.text).replace(",","").replace("&nbsp", "") for x in cols]
-            temp = temp[6:]
-            #count = len(temp)
+    temp = [re.sub('\s{2,}', ' ',x.text).replace(",","").replace("&nbsp", "") for x in cols]
+    temp = temp[6:]
+        #count = len(temp)
+    soup.decompose()
             
-            for i in range(0,len(temp)-1):
-                
-                #",Last Update,Request Received Date,Review Completion Date"
-                if "Condo Name (ID)" in temp[i] or "Status" in temp[i] or "Address" in temp[i] or "Last Update" in temp[i] or "Last Update" in temp[i] or "Request Received Date"in temp[i]:
-                    if "Condo Name" in str(temp[i+1]):
-                        continue
-                    ans += str(temp[i+1]) + ','
-                elif "Review Completion Date" in temp[i]:
-                    ans += str(temp[i+1]) + '\n'
-                    count +=1
+    for i in range(0,len(temp)-1):
+            
+            #",Last Update,Request Received Date,Review Completion Date"
+        if "Condo Name (ID)" in temp[i] or "Status" in temp[i] or "Address" in temp[i] or "Last Update" in temp[i] or "Last Update" in temp[i] or "Request Received Date"in temp[i]:
+            if "Condo Name" in str(temp[i+1]):
+                continue
+            ans += str(temp[i+1]) + ','
+        elif "Review Completion Date" in temp[i]:
+            ans += str(temp[i+1]) + '\n'
+            count +=1
             #print(ans)
                     
                     
             #temp = [re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]
 
-    soup.decompose()
+    
     return ans , count
 
 def isThereNext(text):
@@ -259,5 +254,5 @@ def scraperNoScraping(state, site, reportType):
 
 #if __name__ == "__main__":
 #    print(scraperNoScraping("DC", "hud", ""))
-    #print(scraperNoScraping("GU", "va", "details"))
+  #  print(scraperNoScraping("GU", "va", "details"))
     #print(scraperNoScraping("GU", "va", "summary"))
