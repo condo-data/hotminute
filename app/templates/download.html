@@ -3,7 +3,7 @@
  {% if msgs|length > 0 and msgs is defined%}
  
    <div class="alert alert-warning" style="margin-right:50%;">
-    <strong>Warning!</strong> {% for msg in msgs %} {% if msg|length > 0 and msgs != "" %}
+     {% for msg in msgs %} <strong>Warning!</strong> {% if msg|length > 0 and msgs != "" %}
     <p> {{ msg }}</p>
     
  {% endif %} {% endfor%}

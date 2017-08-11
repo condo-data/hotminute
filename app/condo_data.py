@@ -19,26 +19,37 @@ def scrapeSinglePage(text, site, reportType):
     str = ""
     count = 0 
     rows = soup.table.findAll('tr')
+    if site == 'va' and reportType == 'details':
+        for row in rows:
+            
+            try:
+                cols = row.tr.findAll('td')
+                #print(cols)
+            except:
+                continue
+            
+            if len(cols) > 2:
 
-    for row in rows:
-        cols = row.findAll('td')
-        #print(cols)
-        if site == 'va' and reportType == 'details':
-            temp = ",".join([re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]) + ","
-        else:
+                temp = ",".join([re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]) + ","
+               # print(len(temp))
+                #print(count)
+                str += temp
+        
+            #print(row)
+    else:
+
+        for row in rows:
+            cols = row.findAll('td')
             temp = ",".join([re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]) + "\n"
-        #print(temp)
-        #if "A;B" not in temp and "Condo Search" != temp and temp != "" and temp != ";":
-        if site == "hud":
-            if "CondoName" not in temp:
-                count+=1
-                str += temp
-        else:
-            if "," in temp and "Your search returned" not in temp:
-                #print(temp)
-                count+=1
-                str += temp
 
+            if site == "hud":
+                if "CondoName" not in temp:
+                    str += temp
+            else:
+                if "," in temp and "Your search returned" not in temp:
+                    count+=1
+                    str += temp
+    #print(str)
     return str , count
 
 
@@ -113,13 +124,7 @@ def scraperNoScraping(state, site, reportType):
                 count += int(tup[1])
                 
 
-        if site == "hud":
-            reportType = ""
- 
-        if count != num_condos and reportType != "details":
-            msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
-        elif count != num_condos*5 and reportType == "details":
-            msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
+
 
     else:
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
@@ -130,37 +135,54 @@ def scraperNoScraping(state, site, reportType):
          ans = ans.replace("&nbsp", "")
     print(state +" duration: %.2f s." % d)
 
+
+    if site == 'va' and reportType == 'details':
+        count = 0
     #print(ans)
-    mylist = ans.split(",")
-    i = 0
-    ansl =[]
-    temp = []
+        mylist = ans.split(",")
+        i = 0
+        ansl =[]
+        temp = []
     
-    ansl.append(["Condo Name (ID)","Address,Status","Last Update","Request Received Date","Review Completion Date"])
-    mylist = mylist[6:]
-    for l in mylist:
-        if len(l) > 100:
-            continue
-        #print(l)
-        if i == 12:
-            #print(temp)
-            ansl.append(temp)
-            i = 0
-        if i == 0:
-            temp = []
-            #print(temp)
+        ansl.append(["Condo Name (ID)","Address,Status","Last Update","Request Received Date","Review Completion Date"])
+        #print(mylist)
+        mylist = mylist[6:]
+        
+        for l in mylist:
+            if len(l) > 100:
+                continue
+            #print(l)
+            if i == 12:
+                #print(temp)
+                ansl.append(temp)
+                i = 0
+            if i == 0:
+                temp = []
+                #print(temp)
 
-
-        if i % 2 != 0:
+        
+            if i % 2 != 0:
             #print(i)
             #print(l)
-            temp.append(l)
-        i+=1
+                temp.append(l)
+            i+=1
+        count = len(ansl)-1
     #for l in ansl:
     #    print(l)
     #print(len(ansl))
     #print(mylist)
+    
+    
+    if site == "hud":
+        reportType = ""
 
+    if count != num_condos:
+        msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
+        #print(msg)
+    elif count != num_condos and reportType == "details":
+        msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
+    
+    
     #with open( os.path.join(path, name) , 'r') as mycsvfile:
 #writer = csv.writer(open(newFilename, 'w'))
 
@@ -176,4 +198,6 @@ def scraperNoScraping(state, site, reportType):
 
 
 #if __name__ == "__main__":
-#    scraperNoScraping('AK', "va", "details")
+    
+   
+#    print(scraperNoScraping("GU", "va", "details"))

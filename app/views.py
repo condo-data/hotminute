@@ -33,6 +33,7 @@ def index():
     
     futures[:] = []
     msgs[:] = [] 
+    
     if form.submit1.data and form.validate_on_submit():
         state_selected = request.form['state']
         reportType = ""
