@@ -67,9 +67,14 @@ def index():
             states = states[1:]
             
             count = 0
+            
             for state in states:
-                if count == 5:
-                    break
+                if reportType == "details":
+                    if count == 1:
+                        break
+                else:
+                    if count == 5:
+                        break
                 futures.append(executor.submit(condo_data.scraperNoScraping, state[0], site, reportType))
                 states.remove(state)
                 count += 1

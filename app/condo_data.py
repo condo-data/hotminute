@@ -177,7 +177,8 @@ def scraperNoScraping(state, site, reportType):
     
     if site == "hud":
         reportType = ""
-
+    if site == 'va':
+        count -=1
     if count != num_condos:
         msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
 
