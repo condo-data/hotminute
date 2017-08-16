@@ -5,7 +5,7 @@ import re
 import csv
 import mechanize
 import types
-#from app import app
+from app import app
 
 def scrapeSinglePage(text, site):
     """Take all of the data from the html table and format it into 
@@ -238,8 +238,8 @@ def scraperNoScraping(state, site, reportType):
     if count != num_condos:
         msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
 
-    #with open(app.static_folder+ "/output/" + filename, "wb") as file:
-    with open("static/output/" + filename, "wb") as file:
+    with open(app.static_folder+ "/output/" + filename, "wb") as file:
+    #with open("static/output/" + filename, "wb") as file:
         #if site == 'va' and reportType == 'details':
         #    writer = csv.writer(file)
         #    writer.writerows(ansl)
@@ -249,8 +249,8 @@ def scraperNoScraping(state, site, reportType):
     
     return msg
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     #print(scraperNoScraping("DC", "hud", ""))
-    print(scraperNoScraping("CA", "va", "details"))
+#    print(scraperNoScraping("CA", "va", "details"))
     #print(scraperNoScraping("GU", "va", "summary"))
-    print("program finished")
+#    print("program finished")
