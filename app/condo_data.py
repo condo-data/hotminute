@@ -105,28 +105,32 @@ def scrapeSinglePageDetails2(text, site):
     
     #print(rows[2])
     count = 0
-    cols = rows[2].findAll('td')
-    #print(cols)
+    temp = rows[2].findAll('td')[6:]
+    #for x in cols:
+        #print(x)
+        #print("hi")
+     #   print(re.sub('\s{2,}', ' ',x.text).replace(",","").replace("&nbsp", ""))
             #ans = ans
-    temp = [re.sub('\s{2,}', ' ',x.text).replace(",","").replace("&nbsp", "") for x in cols]
-    temp = temp[6:]
-        #count = len(temp)
-    soup.decompose()
             
     for i in range(0,len(temp)-1):
-            
+        tmp = re.sub('\s{2,}', ' ',temp[i].text).replace(",","").replace("&nbsp", "")
             #",Last Update,Request Received Date,Review Completion Date"
-        if "Condo Name (ID)" in temp[i] or "Status" in temp[i] or "Address" in temp[i] or "Last Update" in temp[i] or "Last Update" in temp[i] or "Request Received Date"in temp[i]:
-            if "Condo Name" in str(temp[i+1]):
+        if "Condo Name (ID)" in tmp or "Status" in tmp or "Address" in tmp or "Last Update" in tmp or "Last Update" in tmp or "Request Received Date"in tmp:
+            if "Condo Name" in str(tmp):
                 continue
-            ans += str(temp[i+1]) + ','
-        elif "Review Completion Date" in temp[i]:
-            ans += str(temp[i+1]) + '\n'
+            #print("yo")
+            tmp2 = re.sub('\s{2,}', ' ',temp[i+1].text).replace(",","").replace("&nbsp", "")
+            ans += str(tmp2) + ','
+        elif "Review Completion Date" in tmp:
+            #print("hi")
+            tmp2 = re.sub('\s{2,}', ' ',temp[i+1].text).replace(",","").replace("&nbsp", "")
+            ans += str(tmp2) + '\n'
             count +=1
-            #print(ans)
-                    
-                    
-            #temp = [re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]
+    
+    #temp = [re.sub('\s{2,}', ' ',x.text).replace(",","").replace("&nbsp", "") for x in cols]
+    #temp = temp[6:]
+        #count = len(temp)
+    soup.decompose()
 
     
     return ans , count
@@ -244,13 +248,13 @@ def scraperNoScraping(state, site, reportType):
         #    writer = csv.writer(file)
         #    writer.writerows(ansl)
         #else:''
-        #print(ans)
+        #gitprint(ans)
         file.write(ans)    
     
     return msg
 
 #if __name__ == "__main__":
     #print(scraperNoScraping("DC", "hud", ""))
-#    print(scraperNoScraping("CA", "va", "details"))
+ #   print(scraperNoScraping("GU", "va", "details"))
     #print(scraperNoScraping("GU", "va", "summary"))
 #    print("program finished")

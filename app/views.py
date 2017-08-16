@@ -152,7 +152,7 @@ def isDone():
     
     for x in futures:
         if x.done():
-            msgs.append(x.result()) 
+            msgs.append(x.result().encode("utf-8"))
             futures.remove(x)
             if state_selected == "ALL" and len(states) > 0:
                 futures.append(executor.submit(condo_data.scraperNoScraping, states[0][0], site, reportType))
