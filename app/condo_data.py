@@ -36,59 +36,6 @@ def scrapeSinglePage(text, site):
     #print(str)
     soup.decompose()
     return str , count
-    
-def scrapeSinglePageDetails(text, site):
-    """Take all of the data from the html table and format it into 
-    a list of lists to be easily processed later"""
-    if site == "hud":
-        strainer = SoupStrainer('table', {'width':"100%", 'border':"1", 'cellpadding':"2", 'cellspacing':"1"})
-    else:
-        strainer = SoupStrainer('table', {"id":"searchForm:mainpanel", "cellpadding":"10", "cellspacing":"0", "class":"inputpanel"})
-    soup = BeautifulSoup(text, parseOnlyThese=strainer)
-
-    temp = ""
-   
-    rows = soup.table.findAll('tr')
-
-    for row in rows:
-            
-        try:
-            cols = row.tr.findAll('td')
-
-        except:
-            continue
-            
-        if len(cols) > 2:
-
-            temp = [re.sub('\s{2,}', ' ',x.text).replace(",","") for x in cols]
-
-    i = 0
-    ansl =[]
-    ansl.append(["Condo Name (ID)","Address,Status","Last Update","Request Received Date","Review Completion Date"])
- 
-    temp = temp[6:]
-    t =[]
-    for l in temp:
-        if len(l) > 100:
-            continue
-     
-        if i == 12:
-            ansl.append(t)
-            i = 0
-            
-        if i == 0:
-            t = []
-
-        if i % 2 != 0:
-            #print(i)
-            #print(l)
-            t.append(l)
-        i+=1
-        
-    count = len(ansl)
-    #print(count)
-
-    return ansl , count
 
 def scrapeSinglePageDetails2(text, site):
     """Take all of the data from the html table and format it into 
@@ -242,7 +189,7 @@ def scraperNoScraping(state, site, reportType):
     if count != num_condos:
         msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
 
-    with open(app.static_folder+ "/output/" + filename, "wb") as file:
+    with open(app.static_folder+ "/output/" + filename, "w") as file:
     #with open("static/output/" + filename, "wb") as file:
         #if site == 'va' and reportType == 'details':
         #    writer = csv.writer(file)
