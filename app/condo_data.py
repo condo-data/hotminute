@@ -5,7 +5,7 @@ import re
 import csv
 import mechanize
 import types
-from app import app
+#from app import app
 
 def scrapeSinglePage(text, site):
     """Take all of the data from the html table and format it into 
@@ -151,7 +151,7 @@ def getNext(text,br,num_condos):
 
 def scraperNoScraping(state, site, reportType):
     print(state + " program starting")
-    
+    msg = ""
     if site == "va":
         url = "https://vip.vba.va.gov/portal/VBAH/VBAHome/condopudsearch?paf_portalId=default&paf_communityId=100002&paf_pageId=500002&paf_dm=full&paf_gear_id=800001&paf_gm=content&paf_ps=_rp_800001_condoName%3D1_%26_rp_800001_condoId%3D1_%26_ps_800001%3Dmaximized%26_pid%3D800001%26_rp_800001_county%3D1_%26_rp_800001_stateCode%3D1_" + state + "%26_pm_800001%3Dview%26_md_800001%3Dview%26_rp_800001_cpbaction%3D1_performSearchPud%26_st_800001%3Dmaximized%26_rp_800001_reportType%3D1_" + reportType + "%26_rp_800001_regionalOffice%3D1_%26_rp_800001_city%3D1_&_requestid=455594"
         if reportType == "details":
@@ -185,7 +185,9 @@ def scraperNoScraping(state, site, reportType):
     count = 0
     t0 = time.time()
     
-    if "No records match all the selection criteria" not in text and reportType != "details" and site != "va":
+    #print(reportType)
+    
+    if "No records match all the selection criteria" not in text and reportType != "details":
         tup = scrapeSinglePage(text,site)
         ans += tup[0]  
         count += int(tup[1])
@@ -207,7 +209,7 @@ def scraperNoScraping(state, site, reportType):
 
 
 
-    else:
+    elif "No records match all the selection criteria" in text:
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
 
     d = time.time() - t0
@@ -236,18 +238,19 @@ def scraperNoScraping(state, site, reportType):
     if count != num_condos:
         msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
 
-    with open(app.static_folder+ "/output/" + filename, "wb") as file:
-    #with open("static/output/" + filename, "wb") as file:
+    #with open(app.static_folder+ "/output/" + filename, "wb") as file:
+    with open("static/output/" + filename, "wb") as file:
         #if site == 'va' and reportType == 'details':
         #    writer = csv.writer(file)
         #    writer.writerows(ansl)
-        #else:
-            file.write(ans)    
-
+        #else:''
+        print(ans)
+        file.write(ans)    
+    
     return msg
 
-
-#if __name__ == "__main__":
-#    print(scraperNoScraping("DC", "hud", ""))
-  #  print(scraperNoScraping("GU", "va", "details"))
+if __name__ == "__main__":
+    #print(scraperNoScraping("DC", "hud", ""))
+    print(scraperNoScraping("CA", "va", "details"))
     #print(scraperNoScraping("GU", "va", "summary"))
+    print("program finished")
