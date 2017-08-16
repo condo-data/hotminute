@@ -185,7 +185,7 @@ def scraperNoScraping(state, site, reportType):
     count = 0
     t0 = time.time()
     
-    if "No records match all the selection criteria" not in text:
+    if "No records match all the selection criteria" not in text and reportType != "details" and site != "va":
         tup = scrapeSinglePage(text,site)
         ans += tup[0]  
         count += int(tup[1])
@@ -235,11 +235,6 @@ def scraperNoScraping(state, site, reportType):
     #print(num_condos)
     if count != num_condos:
         msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
-
-    
-    
-    #with open( os.path.join(path, name) , 'r') as mycsvfile:
-#writer = csv.writer(open(newFilename, 'w'))
 
     with open(app.static_folder+ "/output/" + filename, "wb") as file:
     #with open("static/output/" + filename, "wb") as file:
