@@ -244,7 +244,7 @@ def scraperNoScraping(state, site, reportType):
         #    writer = csv.writer(file)
         #    writer.writerows(ansl)
         #else:''
-        print(ans)
+        #print(ans)
         file.write(ans)    
     
     return msg
