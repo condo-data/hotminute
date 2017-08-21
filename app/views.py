@@ -152,7 +152,7 @@ def isDone():
     
     for x in futures:
         if x.done():
-            print(x.result())
+            print(x.result().encode("utf-8"))
             #msgs.append(x.result().encode("utf-8"))
             futures.remove(x)
             if state_selected == "ALL" and len(states) > 0:
