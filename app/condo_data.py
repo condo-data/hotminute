@@ -6,6 +6,10 @@ import csv
 import mechanize
 import types
 from app import app
+import sys
+reload(sys)
+sys.setdefaultencoding("utf8")
+
 
 def scrapeSinglePage(text, site):
     """Take all of the data from the html table and format it into 

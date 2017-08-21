@@ -2,6 +2,7 @@ from flask import render_template, flash, redirect,request, current_app, url_for
 from app import app
 from .forms import CondoForm, DownloadForm, VACondoForm
 import condo_data
+import sys
 import os
 #import time
 import datetime
@@ -14,6 +15,10 @@ tracker = SummaryTracker()
 executor = ProcessPoolExecutor(3)
 futures = []
 msgs = []
+
+reload(sys)
+sys.setdefaultencoding("utf8")
+
 
 
 @app.route('/')
@@ -152,7 +157,7 @@ def isDone():
     
     for x in futures:
         if x.done():
-            print(x.result().encode("utf-8"))
+            print(x.result())
             #msgs.append(x.result().encode("utf-8"))
             futures.remove(x)
             if state_selected == "ALL" and len(states) > 0:
