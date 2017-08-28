@@ -201,7 +201,22 @@ def scraperNoScraping(state, site, reportType):
         #else:''
         #gitprint(ans)
         file.write(ans)    
+        
+        
+        
+    flags = (gc.DEBUG_COLLECTABLE |
+         gc.DEBUG_UNCOLLECTABLE |
+         gc.DEBUG_OBJECTS |
+         gc.DEBUG_SAVEALL
+         )
+
+    gc.set_debug(flags)
+        
+        
     collected = gc.collect()
+    
+    
+    
     
     print("Garbage collector: collected %d objects." % (collected))
     print(gc.garbage)
