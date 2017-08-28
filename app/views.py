@@ -9,6 +9,7 @@ import datetime
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import zipfile
 from io import BytesIO
+import gc
 #from pympler.tracker import SummaryTracker
 
 #import gc
@@ -149,6 +150,11 @@ def download(state_selected=None, filename=None):
         attachment_filename = filename
     
     fn = state_selected + "_Condo_Data.csv"
+    
+    collected = gc.collect()
+    print("Garbage collector: collected %d objects." % (collected))
+    
+    
     return send_from_directory(directory=directory, filename=fn, as_attachment=True, attachment_filename=attachment_filename)
 
 @app.route('/done/', methods=['GET', "POST"])

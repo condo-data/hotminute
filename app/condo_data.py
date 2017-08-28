@@ -215,12 +215,12 @@ def scraperNoScraping(state, site, reportType):
     #gc.set_debug(flags)
         
         
-    collected = gc.collect()
+    gc.collect()
     
     
     
     
-    print("Garbage collector: collected %d objects." % (collected))
+    #print("Garbage collector: collected %d objects." % (collected))
     #print(gc.garbage)
     
     return msg
