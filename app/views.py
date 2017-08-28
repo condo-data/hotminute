@@ -9,9 +9,12 @@ import datetime
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import zipfile
 from io import BytesIO
-from pympler.tracker import SummaryTracker
-import gc
-tracker = SummaryTracker()
+#from pympler.tracker import SummaryTracker
+
+#import gc
+#from werkzeug.contrib.cache import GAEMemcachedCache
+#cache = GAEMemcachedCache()
+#tracker = SummaryTracker()
 executor = ProcessPoolExecutor(3)
 futures = []
 msgs = []

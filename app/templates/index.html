@@ -1,6 +1,10 @@
 {% extends "base.html" %} {% block content %}
 <div class="container">
 
+    <div class="alert alert-warning"> 
+    <p><strong>Warning!</strong> System times out after 30 minutes of inactivity.</p>
+    </div>
+
     <div class="well">
         <form class="form-inline" action="{{ url_for('index') }}" method="POST" name="condoform">
             {{ form.hidden_tag() }}

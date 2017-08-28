@@ -1,12 +1,14 @@
 from BeautifulSoup import BeautifulSoup, SoupStrainer
-import requests
+#import requests
 import time
 import re
 import csv
 import mechanize
-import types
+#import types
+import gc
 from app import app
 import sys
+
 reload(sys)
 sys.setdefaultencoding("utf8")
 
@@ -160,8 +162,6 @@ def scraperNoScraping(state, site, reportType):
                     tup = scrapeSinglePage(text,site)
                     ans += tup[0]
                     count += int(tup[1])
-                
-
 
 
     elif "No records match all the selection criteria" in text:
@@ -201,6 +201,10 @@ def scraperNoScraping(state, site, reportType):
         #else:''
         #gitprint(ans)
         file.write(ans)    
+    collected = gc.collect()
+    
+    print("Garbage collector: collected %d objects." % (collected))
+    print(gc.garbage)
     
     return msg
 
