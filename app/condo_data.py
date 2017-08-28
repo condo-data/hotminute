@@ -79,7 +79,7 @@ def scrapeSinglePageDetails2(text, site):
             tmp2 = re.sub('\s{2,}', ' ',temp[i+1].text).replace(",","").replace("&nbsp", "")
             ans += str(tmp2) + '\n'
             count +=1
-    
+    del temp[:]
     #temp = [re.sub('\s{2,}', ' ',x.text).replace(",","").replace("&nbsp", "") for x in cols]
     #temp = temp[6:]
         #count = len(temp)
