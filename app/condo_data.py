@@ -204,6 +204,8 @@ def scraperNoScraping(state, site, reportType):
         #gitprint(ans)
         file.write(ans)    
         
+    ans = None
+    del ans
         
         
     #flags = (gc.DEBUG_COLLECTABLE |
