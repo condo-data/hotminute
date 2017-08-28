@@ -31,6 +31,9 @@ def index():
     global states
     global reportType
     
+    collected = gc.collect()
+    print("Garbage collector: collected %d objects." % (collected))
+    
     directory = app.static_folder + "/output/"
         
     for file in os.listdir(directory):
@@ -145,14 +148,14 @@ def download(state_selected=None, filename=None):
         del files
         
         memory_file.seek(0)
+        memory_file.close()
         return send_file(memory_file, attachment_filename=filename, as_attachment=True)
     else: 
         attachment_filename = filename
     
     fn = state_selected + "_Condo_Data.csv"
     
-    collected = gc.collect()
-    print("Garbage collector: collected %d objects." % (collected))
+
     
     
     return send_from_directory(directory=directory, filename=fn, as_attachment=True, attachment_filename=attachment_filename)
