@@ -145,10 +145,10 @@ def download(state_selected=None, filename=None):
         with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
             for individualFile in files:
                 zf.write(directory + individualFile, "/"+individualFile)
-        del files
+        
+        del files[:]
         
         memory_file.seek(0)
-        memory_file.close()
         return send_file(memory_file, attachment_filename=filename, as_attachment=True)
     else: 
         attachment_filename = filename
