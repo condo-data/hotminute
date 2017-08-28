@@ -91,9 +91,11 @@ def scrapeSinglePageDetails2(text, site):
 def isThereNext(text):
     """Check there is a Next button on the page."""
     soup = BeautifulSoup(text)
-
+    
     if("[Next]" in soup.text):
+        soup.decompose()
         return True
+        
     soup.decompose()
     return False
 
@@ -204,13 +206,13 @@ def scraperNoScraping(state, site, reportType):
         
         
         
-    flags = (gc.DEBUG_COLLECTABLE |
-         gc.DEBUG_UNCOLLECTABLE |
-         gc.DEBUG_OBJECTS |
-         gc.DEBUG_SAVEALL
-         )
+    #flags = (gc.DEBUG_COLLECTABLE |
+    #     gc.DEBUG_UNCOLLECTABLE |
+    #     gc.DEBUG_OBJECTS |
+    #     gc.DEBUG_SAVEALL
+    #     )
 
-    gc.set_debug(flags)
+    #gc.set_debug(flags)
         
         
     collected = gc.collect()
@@ -219,7 +221,7 @@ def scraperNoScraping(state, site, reportType):
     
     
     print("Garbage collector: collected %d objects." % (collected))
-    print(gc.garbage)
+    #print(gc.garbage)
     
     return msg
 
