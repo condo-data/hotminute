@@ -1,4 +1,20 @@
 {% extends "base.html" %} {% block content %}
+var pinger = function () {
+        var url = document.location.pathname;
+        
+    $.ajax({
+        url : url,
+        complete : function () {
+            setTimeout(function () {
+                pinger();
+            }, 1000);
+        }
+    });
+};
+pinger();
+</script>
+
+
 
  {% if msgs|length > 1 and msgs is defined%}
  
