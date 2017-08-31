@@ -27,10 +27,10 @@ VA_STATES = [('ALL', 'ALL STATES'),('AK', 'Alaska'),('AS','American Samoa'),('AL
 MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 465
 MAIL_USE_SSL = True
-#MAIL_USERNAME = 'condodataapp@gmail.com'
-#MAIL_PASSWORD = 'summerintern2017'
-MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+MAIL_USERNAME = 'condodataapp@gmail.com'
+MAIL_PASSWORD = 'summerintern2017'
+#MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+#MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 # administrator list
 ADMINS = ['condodataapp@gmail.com']
