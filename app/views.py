@@ -159,7 +159,8 @@ def downloadpage(state_selected=None, site=None):
 @app.route('/download/<state_selected>/<filename>', methods=['GET', 'POST'])
 def download(state_selected=None, filename=None):
     directory = app.static_folder + "/output/"
-
+    print(directory)
+    print(filename)
     return send_from_directory(directory=directory, filename=filename, as_attachment=True, attachment_filename=filename)
     
 @app.route('/done/', methods=['GET', "POST"])
