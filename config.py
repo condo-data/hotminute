@@ -26,7 +26,6 @@ VA_STATES = [('ALL', 'ALL STATES'),('AK', 'Alaska'),('AS','American Samoa'),('AL
     # email server
 MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 465
-MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 MAIL_USERNAME = 'condodataapp@gmail.com'
 MAIL_PASSWORD = 'summerintern2017'
