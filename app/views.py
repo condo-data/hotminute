@@ -162,7 +162,7 @@ def download(state_selected=None, filename=None):
     email = Message(subject="Test", sender=ADMINS[0], recipients=['condodataapp@gmail.com'])
     
     with app.open_resource(directory + fn) as fp:
-        email.attach(attachment_filename, fp.read())
+        email.attach(attachment_filename, 'text/csv' , fp.read())
     
     email.body = "this is a test"
     mail.send(email)
