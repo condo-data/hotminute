@@ -161,6 +161,13 @@ def downloadpage(state_selected=None, site=None):
         email.attach(fn, 'text/csv' , fp.read())
     
     email.body = "Your file is ready for download. The file should also be attached to this email."
+    
+    if len(msgs) > 0:
+        email.body += " \n Errors in file:\n"
+        
+        for msg in msgs:
+            email.body += msg + "\n"
+    
     mail.send(email)
 
     if form.validate_on_submit():
