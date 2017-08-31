@@ -188,6 +188,7 @@ def isDone():
         if x.done():
             try:
                 msgs.append(x.result())
+                print(msgs)
             except:
                 pass
                 
