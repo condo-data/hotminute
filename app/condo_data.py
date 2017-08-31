@@ -194,6 +194,7 @@ def scraperNoScraping(state, site, reportType):
     if count != num_condos and len(msg) < 1:
         msg ="Site error occured in reading data for " + state + ", not all data was retrieved."
     if "No records match all the selection criteria" in text:
+        print("no data")
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
 
     with open(app.static_folder+ "/output/" + filename, "w") as file:
