@@ -142,10 +142,15 @@ def downloadpage(state_selected=None, site=None):
                 zf.write(directory + individualFile, "/"+individualFile)
         
         del files[:]
+    
+    if state_selected == "ALL":
+        os_fn = fn
+    else:
+        os_fn = state_selected + "_Condo_Data.csv"
 
     email = Message(subject="Test", sender=ADMINS[0], recipients=['condodataapp@gmail.com'])
     
-    with app.open_resource(directory + fn) as fp:
+    with app.open_resource(directory + os_fn) as fp:
         email.attach(fn, 'text/csv' , fp.read())
     
     email.body = "this is a test"
