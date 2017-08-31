@@ -140,7 +140,7 @@ def downloadpage(state_selected=None, site=None):
             if file.endswith(".csv"):
                 files.append(os.path.join(file))
   
-        with zipfile.ZipFile(fn, 'w', zipfile.ZIP_DEFLATED) as zf:
+        with zipfile.ZipFile(directory + fn, 'w', zipfile.ZIP_DEFLATED) as zf:
             for individualFile in files:
                 zf.write(directory + individualFile, "/"+individualFile)
         
