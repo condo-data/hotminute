@@ -126,6 +126,30 @@ def downloadpage(state_selected=None, site=None):
     day = mydate.strftime('%d')
     year = mydate.year
     fn = str(month) +  "_" +  str(day)+ "_" + str(year) + "_" + state_selected + "_" + origin + "_Condo_Data" + fileType
+    
+    directory = app.static_folder + "/output/"
+    
+    if state_selected == 'ALL':
+        files = []
+        
+        
+        for file in os.listdir(directory):
+            if file.endswith(".csv"):
+                files.append(os.path.join(file))
+  
+        with zipfile.ZipFile(fn, 'w', zipfile.ZIP_DEFLATED) as zf:
+            for individualFile in files:
+                zf.write(directory + individualFile, "/"+individualFile)
+        
+        del files[:]
+
+    email = Message(subject="Test", sender=ADMINS[0], recipients=['condodataapp@gmail.com'])
+    
+    with app.open_resource(directory + fn) as fp:
+        email.attach(fn, 'text/csv' , fp.read())
+    
+    email.body = "this is a test"
+    mail.send(email)
 
     if form.validate_on_submit():
         return redirect(url_for("download", state_selected=state_selected, filename=fn)) 
@@ -134,47 +158,10 @@ def downloadpage(state_selected=None, site=None):
     
 @app.route('/download/<state_selected>/<filename>', methods=['GET', 'POST'])
 def download(state_selected=None, filename=None):
-    
     directory = app.static_folder + "/output/"
-    if state_selected == 'ALL':
-        memory_file = BytesIO()
 
-        files = []
-        
-        for file in os.listdir(directory):
-            if file.endswith(".csv"):
-                files.append(os.path.join(file))
-  
-        with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
-            for individualFile in files:
-                zf.write(directory + individualFile, "/"+individualFile)
-        
-        del files[:]
-        
-        memory_file.seek(0)
-        return send_file(memory_file, attachment_filename=filename, as_attachment=True)
-    else: 
-        attachment_filename = filename
+    return send_from_directory(directory=directory, filename=filename, as_attachment=True, attachment_filename=filename)
     
-    fn = state_selected + "_Condo_Data.csv"
-    
-
-    email = Message(subject="Test", sender=ADMINS[0], recipients=['condodataapp@gmail.com'])
-    
-    with app.open_resource(directory + fn) as fp:
-        email.attach(attachment_filename, 'text/csv' , fp.read())
-    
-    email.body = "this is a test"
-    mail.send(email)
-    #server = smtplib.SMTP_SSL('smtp.googlemail.com', 465)
-    #server.login(gmail_user, password)
-    #server.sendmail(gmail_user, TO, BODY)
-    print('sent?')
-
-    
-    
-    return send_from_directory(directory=directory, filename=fn, as_attachment=True, attachment_filename=attachment_filename)
-
 @app.route('/done/', methods=['GET', "POST"])
 def isDone():
    
