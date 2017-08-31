@@ -196,7 +196,7 @@ def scraperNoScraping(state, site, reportType):
     if "No records match all the selection criteria" in text:
         #print("no data")
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
-    print(msg)
+
     with open(app.static_folder+ "/output/" + filename, "w") as file:
     #with open("static/output/" + filename, "wb") as file:
         #if site == 'va' and reportType == 'details':
