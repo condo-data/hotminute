@@ -1,9 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, SubmitField, RadioField
+from wtforms import SelectField, SubmitField, RadioField, TextAreaField
 from app import app
     
 class CondoForm(FlaskForm):
     states=app.config['STATES']
+    
+    email = TextAreaField()
     
     state = SelectField(
         'State', 
@@ -13,6 +15,8 @@ class CondoForm(FlaskForm):
 
 class VACondoForm(FlaskForm):
     states=app.config['VA_STATES']
+    
+    email = TextAreaField()
     
     state = SelectField(
         'State', 

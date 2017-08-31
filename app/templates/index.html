@@ -11,8 +11,8 @@
 
 
             <h4>HUD.gov</h4>
-            <p>Please select a state: {{ form.state }} </p>
-
+            <p> Enter email: {{ form.email }} </p>
+            <p>Please select a state: {{ form.state }} </p
             {{ form.submit1 }} <br>
         </form>
     </div>
@@ -23,6 +23,7 @@
 
 
             <h4>VA.gov</h4>
+            <p> Enter email: {{ va_form.email }} </p>
             <p>Please select a state: {{ va_form.state }} </p>
             <p>Please select report type: {% for subfield in va_form.rt %}
                 <tr>

@@ -33,6 +33,7 @@ sys.setdefaultencoding("utf8")
 def index():
     global states
     global reportType
+    global receiver
     
     collected = gc.collect()
     print("Garbage collector: collected %d objects." % (collected))
@@ -51,6 +52,7 @@ def index():
     
     if form.submit1.data and form.validate_on_submit():
         state_selected = request.form['state']
+        receiver = request.form['email']
         reportType = ""
         site = "hud"
         
@@ -76,6 +78,7 @@ def index():
         site = "va"
         state_selected = request.form.get('state')
         reportType = request.form.get('rt')
+        receiver = request.form.get('email')
         
         if state_selected == "ALL":
             states = app.config["VA_STATES"]
@@ -148,12 +151,16 @@ def downloadpage(state_selected=None, site=None):
     else:
         os_fn = state_selected + "_Condo_Data.csv"
 
-    email = Message(subject="Test", sender=ADMINS[0], recipients=['condodataapp@gmail.com'])
+    email = Message(subject="Hot Minute - Condo Data", sender=ADMINS[0], recipients=[receiver])
+    
+    for file in os.listdir(directory):
+        print(file)
+    print(os_fn)
     
     with app.open_resource(directory + os_fn) as fp:
         email.attach(fn, 'text/csv' , fp.read())
     
-    email.body = "this is a test"
+    email.body = "Your file is ready for download. The file should also be attached to this email."
     mail.send(email)
 
     if form.validate_on_submit():
