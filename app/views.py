@@ -158,8 +158,12 @@ def download(state_selected=None, filename=None):
     
     fn = state_selected + "_Condo_Data.csv"
     
-    
+
     email = Message(subject="Test", sender=ADMINS[0], recipients=['condodataapp@gmail.com'])
+    
+    with app.open_resource(directory + fn) as fp:
+        email.attach(attachment_filename, fp.read())
+    
     email.body = "this is a test"
     mail.send(email)
     #server = smtplib.SMTP_SSL('smtp.googlemail.com', 465)
