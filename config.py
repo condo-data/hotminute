@@ -1,4 +1,6 @@
 #this is our config file
+import os
+
 CSRF_ENABLED = True
 SECRET_KEY = 'thi$ismy$ecretkey!'
 
@@ -20,3 +22,14 @@ VA_STATES = [('ALL', 'ALL STATES'),('AK', 'Alaska'),('AS','American Samoa'),('AL
     ('NH', 'New Hampshire'),('NJ', 'New Jersey'),('NM', 'New Mexico'),('NV', 'Nevada'),('NY', 'New York'),('OH', 'Ohio'),
     ('OK', 'Oklahoma'),('OR', 'Oregon'),('PA', 'Pennsylvania'),('PR', 'Puerto Rico'),('RI', 'Rhode Island'),('SC', 'South Carolina'),
     ('WA', 'Washington'),('WI', 'Wisconsin'),('WV', 'West Virginia'),('WY', 'Wyoming'),('AA','AA'),('AE','AE'),('AP','AP')]
+    
+    # email server
+MAIL_SERVER = 'smtp.googlemail.com'
+MAIL_PORT = 465
+MAIL_USE_TLS = False
+MAIL_USE_SSL = True
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+
+# administrator list
+ADMINS = ['condodataapp@gmail.com']

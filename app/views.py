@@ -10,6 +10,9 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 import zipfile
 from io import BytesIO
 import gc
+from flask_mail import Message
+from app import mail
+from config import ADMINS
 #from pympler.tracker import SummaryTracker
 
 #import gc
@@ -154,6 +157,11 @@ def download(state_selected=None, filename=None):
         attachment_filename = filename
     
     fn = state_selected + "_Condo_Data.csv"
+    
+    
+    email = Message(subject="Test", sender=ADMINS[0], recipients='condodataapp@gmail.com')
+    email.body = "this is a test"
+    mail.send(email)
     
 
     
