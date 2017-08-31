@@ -24,7 +24,7 @@ VA_STATES = [('ALL', 'ALL STATES'),('AK', 'Alaska'),('AS','American Samoa'),('AL
     ('WA', 'Washington'),('WI', 'Wisconsin'),('WV', 'West Virginia'),('WY', 'Wyoming'),('AA','AA'),('AE','AE'),('AP','AP')]
     
     # email server
-MAIL_SERVER = 'smtp.googlemail.com'
+MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 465
 MAIL_USE_TLS = False
 MAIL_USE_SSL = True
