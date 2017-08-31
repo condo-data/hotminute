@@ -162,7 +162,7 @@ def download(state_selected=None, filename=None):
     email = Message(subject="Test", sender=ADMINS[0], recipients='condodataapp@gmail.com')
     email.body = "this is a test"
     mail.send(email)
-    
+    print('sent?')
 
     
     

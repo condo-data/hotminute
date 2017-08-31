@@ -28,8 +28,10 @@ MAIL_SERVER = 'smtp.googlemail.com'
 MAIL_PORT = 465
 MAIL_USE_TLS = False
 MAIL_USE_SSL = True
-MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+MAIL_USERNAME = 'condodataapp@gmail.com'
+MAIL_PASSWORD = 'summerintern2017'
+#MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+#MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 # administrator list
 ADMINS = ['condodataapp@gmail.com']
