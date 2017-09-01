@@ -22,7 +22,7 @@ from config import ADMINS
 executor = ProcessPoolExecutor(3)
 futures = []
 msgs = []
-receiver = ""
+ 
 
 reload(sys)
 sys.setdefaultencoding("utf8")
@@ -34,6 +34,7 @@ sys.setdefaultencoding("utf8")
 def index():
     global states
     global reportType
+    global receiver
     
     
     collected = gc.collect()
