@@ -10,4 +10,5 @@ mechanize==0.3.5
 Pympler==0.5
 requests==2.9.1
 six==1.10.0
+waitress==1.0.2
 WTForms==2.1
