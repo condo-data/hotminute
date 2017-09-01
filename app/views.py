@@ -165,7 +165,7 @@ def downloadpage(state_selected=None, site=None):
     #with app.open_resource(directory + os_fn) as fp:
     #    email.attach(fn, 'text/csv' , fp.read())
     
-    email.body = "Your file is ready for download. The file should also be attached to this email.\n"
+    email.body = "Your file is ready for download.\n"
     
     if len(msgs) > 0:
         

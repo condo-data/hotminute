@@ -197,6 +197,7 @@ def scraperNoScraping(state, site, reportType):
         #print("no data")
         msg = "No records match the selection criteria for " + state + " no data was retrieved."
 
+    gc.collect()
     with open(app.static_folder+ "/output/" + filename, "w") as file:
     #with open("static/output/" + filename, "wb") as file:
         #if site == 'va' and reportType == 'details':
@@ -219,7 +220,7 @@ def scraperNoScraping(state, site, reportType):
     #gc.set_debug(flags)
         
         
-    gc.collect()
+    
     
     
     
