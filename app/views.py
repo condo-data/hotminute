@@ -90,7 +90,7 @@ def index():
             
             for state in states:
                 if reportType == "details":
-                    if count == 1:
+                    if count == 2:
                         break
                 else:
                     if count == 5:
