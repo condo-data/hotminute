@@ -25,9 +25,9 @@ VA_STATES = [('ALL', 'ALL STATES'),('AK', 'Alaska'),('AS','American Samoa'),('AL
     
     # email server
 MAIL_SERVER = 'smtp.gmail.com'
-MAIL_PORT = 465
-MAIL_USE_SSL = True
-MAIL_USE_TLS = False
+MAIL_PORT = 587
+MAIL_USE_SSL = False
+MAIL_USE_TLS = True
 #MAIL_USERNAME = 'condodataapp@gmail.com'
 #MAIL_PASSWORD = 'summerintern2017'
 MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
