@@ -199,7 +199,8 @@ def isDone():
     for x in futures:
         if x.done():
             try:
-                msgs.append(x.result())
+                if len(x.result()) > 0:
+                    msgs.append(x.result())
                 print(msgs)
             except:
                 pass
