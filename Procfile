@@ -1,1 +1,1 @@
-web: waitress-serve newrelic-admin run-program python run.py
+web: newrelic-admin waitress-serve python run.py
