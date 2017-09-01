@@ -22,6 +22,7 @@ from config import ADMINS
 executor = ProcessPoolExecutor(3)
 futures = []
 msgs = []
+receiver = ""
 
 reload(sys)
 sys.setdefaultencoding("utf8")
@@ -33,7 +34,7 @@ sys.setdefaultencoding("utf8")
 def index():
     global states
     global reportType
-    global receiver
+    
     
     collected = gc.collect()
     print("Garbage collector: collected %d objects." % (collected))
@@ -153,12 +154,12 @@ def downloadpage(state_selected=None, site=None):
 
     email = Message(subject="Hot Minute - Condo Data", sender=ADMINS[0], recipients=[receiver])
     
-    for file in os.listdir(directory):
-        print(file)
-    print(os_fn)
+    #for file in os.listdir(directory):
+    #    print(file)
+    #print(os_fn)
     
-    with app.open_resource(directory + os_fn) as fp:
-        email.attach(fn, 'text/csv' , fp.read())
+    #with app.open_resource(directory + os_fn) as fp:
+    #    email.attach(fn, 'text/csv' , fp.read())
     
     email.body = "Your file is ready for download. The file should also be attached to this email."
     
