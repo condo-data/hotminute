@@ -152,7 +152,7 @@ def downloadpage(state_selected=None, site=None):
     else:
         os_fn = state_selected + "_Condo_Data.csv"
 
-    email = Message(subject="Hot Minute - Condo Data", sender=ADMINS[0], recipients=["Summer Thompson <condodataapp@gmail.com>",]) #'<' + receiver + '>'
+    email = Message(subject="Hot Minute - Condo Data", sender=ADMINS[0], recipients=[receiver + " <" + receiver + ">",]) #'<' + receiver + '>'
     
     #for file in os.listdir(directory):
     #    print(file)
@@ -161,10 +161,9 @@ def downloadpage(state_selected=None, site=None):
     #with app.open_resource(directory + os_fn) as fp:
     #    email.attach(fn, 'text/csv' , fp.read())
     
-    email.body = "Your file is ready for download. The file should also be attached to this email."
+    email.body = "Your file is ready for download. The file should also be attached to this email.\n"
     
     if len(msgs) > 0:
-        email.body += " \nErrors in file:\n\n"
         
         for msg in msgs:
             if len(msg) > 0:
