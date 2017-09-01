@@ -152,7 +152,7 @@ def downloadpage(state_selected=None, site=None):
     else:
         os_fn = state_selected + "_Condo_Data.csv"
 
-    email = Message(subject="Hot Minute - Condo Data", sender=ADMINS[0], recipients=['<' + receiver + '>'])
+    email = Message(subject="Hot Minute - Condo Data", sender=ADMINS[0], recipients=[receiver]) #'<' + receiver + '>'
     
     #for file in os.listdir(directory):
     #    print(file)
