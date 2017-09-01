@@ -1,7 +1,7 @@
 #!flask/bin/python
 from app import app
 import os
-from waitress import serve
+#from waitress import serve
 
 if __name__ == '__main__':
  port = int(os.environ.get("PORT", 5000))
